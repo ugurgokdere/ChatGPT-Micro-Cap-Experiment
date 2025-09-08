@@ -19,16 +19,17 @@ from __future__ import annotations
 from dataclasses import dataclass
 from datetime import datetime, timedelta
 from pathlib import Path
-from typing import Any, cast
+from typing import Any, cast,Dict, List, Optional
 import os
 import warnings
 
 import numpy as np
 import pandas as pd
 import yfinance as yf
+import json
+import logging
 
-
-warnings.simplefilter("ignore", category=FutureWarning)
+# Optional pandas-datareader import for Stooq access
 try:
     import pandas_datareader.data as pdr
     _HAS_PDR = True
@@ -39,12 +40,16 @@ except Exception:
 ASOF_DATE: pd.Timestamp | None = None
 
 def set_asof(date: str | datetime | pd.Timestamp | None) -> None:
-    """Set a global 'as of' date so the script treats that day as 'today'."""
+    """Set a global 'as of' date so the script treats that day as 'today'. Use 'YYYY-MM-DD' format."""
     global ASOF_DATE
     if date is None:
+        print("No prior date passed. Using today's date...")
         ASOF_DATE = None
         return
     ASOF_DATE = pd.Timestamp(date).normalize()
+    pure_date = ASOF_DATE.date()
+
+    print(f"Setting date as {pure_date}.")
 
 # Allow env var override:  ASOF_DATE=YYYY-MM-DD python trading_script.py
 _env_asof = os.environ.get("ASOF_DATE")
@@ -61,6 +66,84 @@ SCRIPT_DIR = Path(__file__).resolve().parent
 DATA_DIR = SCRIPT_DIR  # Save files alongside this script by default
 PORTFOLIO_CSV = DATA_DIR / "chatgpt_portfolio_update.csv"
 TRADE_LOG_CSV = DATA_DIR / "chatgpt_trade_log.csv"
+DEFAULT_BENCHMARKS = ["IWO", "XBI", "SPY", "IWM"]
+
+# ------------------------------
+# Configuration helpers — benchmark tickers (tickers.json)
+# ------------------------------
+
+
+
+logger = logging.getLogger(__name__)
+
+def _read_json_file(path: Path) -> Optional[Dict]:
+    """Read and parse JSON from `path`. Return dict on success, None if not found or invalid.
+
+    - FileNotFoundError -> return None
+    - JSON decode error -> log a warning and return None
+    - Other IO errors -> log a warning and return None
+    """
+    try:
+        with path.open("r", encoding="utf-8") as fh:
+            return json.load(fh)
+    except FileNotFoundError:
+        return None
+    except json.JSONDecodeError as exc:
+        logger.warning("tickers.json present but malformed: %s -> %s. Falling back to defaults.", path, exc)
+        return None
+    except Exception as exc:
+        logger.warning("Unable to read tickers.json (%s): %s. Falling back to defaults.", path, exc)
+        return None
+
+def load_benchmarks(script_dir: Path | None = None) -> List[str]:
+    """Return a list of benchmark tickers.
+
+    Looks for a `tickers.json` file in either:
+      - script_dir (if provided) OR the module SCRIPT_DIR, and then
+      - script_dir.parent (project root candidate).
+
+    Expected schema:
+      {"benchmarks": ["IWO", "XBI", "SPY", "IWM"]}
+
+    Behavior:
+    - If file missing or malformed -> return DEFAULT_BENCHMARKS copy.
+    - If 'benchmarks' key missing or not a list -> log warning and return defaults.
+    - Normalizes tickers (strip, upper) and preserves order while removing duplicates.
+    """
+    base = Path(script_dir) if script_dir else SCRIPT_DIR
+    candidates = [base, base.parent]
+
+    cfg = None
+    cfg_path = None
+    for c in candidates:
+        p = (c / "tickers.json").resolve()
+        data = _read_json_file(p)
+        if data is not None:
+            cfg = data
+            cfg_path = p
+            break
+
+    if not cfg:
+        return DEFAULT_BENCHMARKS.copy()
+
+    benchmarks = cfg.get("benchmarks")
+    if not isinstance(benchmarks, list):
+        logger.warning("tickers.json at %s missing 'benchmarks' array. Falling back to defaults.", cfg_path)
+        return DEFAULT_BENCHMARKS.copy()
+
+    seen = set()
+    result: list[str] = []
+    for t in benchmarks:
+        if not isinstance(t, str):
+            continue
+        up = t.strip().upper()
+        if not up:
+            continue
+        if up not in seen:
+            seen.add(up)
+            result.append(up)
+
+    return result if result else DEFAULT_BENCHMARKS.copy()
 
 
 # ------------------------------
@@ -203,7 +286,11 @@ def _stooq_download(
         t = t.lower()
 
     try:
-        df = cast(pd.DataFrame, pdr.DataReader(t, "stooq", start=start, end=end))
+        # Ensure pdr is imported locally if not available globally
+        if not _HAS_PDR:
+            return pd.DataFrame()
+        import pandas_datareader.data as pdr_local
+        df = cast(pd.DataFrame, pdr_local.DataReader(t, "stooq", start=start, end=end))
         df.sort_index(inplace=True)
         return df
     except Exception:
@@ -370,9 +457,13 @@ Would you like to log a manual trade? Enter 'b' for buy, 's' for sell, or press 
                         "PnL": 0.0,
                         "Reason": "MANUAL BUY MOO - Filled",
                     }
+                    # --- Manual BUY MOO logging ---
                     if os.path.exists(TRADE_LOG_CSV):
                         df_log = pd.read_csv(TRADE_LOG_CSV)
-                        df_log = pd.concat([df_log, pd.DataFrame([log])], ignore_index=True)
+                        if df_log.empty:
+                            df_log = pd.DataFrame([log])
+                        else:
+                            df_log = pd.concat([df_log, pd.DataFrame([log])], ignore_index=True)
                     else:
                         df_log = pd.DataFrame([log])
                     df_log.to_csv(TRADE_LOG_CSV, index=False)
@@ -386,7 +477,10 @@ Would you like to log a manual trade? Enter 'b' for buy, 's' for sell, or press 
                             "buy_price": float(exec_price),
                             "cost_basis": float(notional),
                         }
-                        portfolio_df = pd.concat([portfolio_df, pd.DataFrame([new_trade])], ignore_index=True)
+                        if portfolio_df.empty:
+                            portfolio_df = pd.DataFrame([new_trade])
+                        else:
+                            portfolio_df = pd.concat([portfolio_df, pd.DataFrame([new_trade])], ignore_index=True)
                     else:
                         idx = rows.index[0]
                         cur_shares = float(portfolio_df.at[idx, "shares"])
@@ -546,7 +640,10 @@ def log_sell(
 
     if TRADE_LOG_CSV.exists():
         df = pd.read_csv(TRADE_LOG_CSV)
-        df = pd.concat([df, pd.DataFrame([log])], ignore_index=True)
+        if df.empty:
+            df = pd.DataFrame([log])
+        else:
+            df = pd.concat([df, pd.DataFrame([log])], ignore_index=True)
     else:
         df = pd.DataFrame([log])
     df.to_csv(TRADE_LOG_CSV, index=False)
@@ -614,23 +711,35 @@ def log_manual_buy(
     }
     if os.path.exists(TRADE_LOG_CSV):
         df = pd.read_csv(TRADE_LOG_CSV)
-        df = pd.concat([df, pd.DataFrame([log])], ignore_index=True)
+        if df.empty:
+            df = pd.DataFrame([log])
+        else:
+            df = pd.concat([df, pd.DataFrame([log])], ignore_index=True)
     else:
         df = pd.DataFrame([log])
     df.to_csv(TRADE_LOG_CSV, index=False)
 
     rows = chatgpt_portfolio.loc[chatgpt_portfolio["ticker"].str.upper() == ticker.upper()]
     if rows.empty:
-        chatgpt_portfolio = pd.concat(
-            [chatgpt_portfolio, pd.DataFrame([{
+        if chatgpt_portfolio.empty:
+            chatgpt_portfolio = pd.DataFrame([{
                 "ticker": ticker,
                 "shares": float(shares),
                 "stop_loss": float(stoploss),
                 "buy_price": float(exec_price),
                 "cost_basis": float(cost_amt),
-            }])],
-            ignore_index=True
-        )
+            }])
+        else:
+            chatgpt_portfolio = pd.concat(
+                [chatgpt_portfolio, pd.DataFrame([{
+                    "ticker": ticker,
+                    "shares": float(shares),
+                    "stop_loss": float(stoploss),
+                    "buy_price": float(exec_price),
+                    "cost_basis": float(cost_amt),
+                }])],
+                ignore_index=True
+            )
     else:
         idx = rows.index[0]
         cur_shares = float(chatgpt_portfolio.at[idx, "shares"])
@@ -711,10 +820,14 @@ If this is a mistake, enter 1. """
     }
     if os.path.exists(TRADE_LOG_CSV):
         df = pd.read_csv(TRADE_LOG_CSV)
-        df = pd.concat([df, pd.DataFrame([log])], ignore_index=True)
+        if df.empty:
+            df = pd.DataFrame([log])
+        else:
+            df = pd.concat([df, pd.DataFrame([log])], ignore_index=True)
     else:
         df = pd.DataFrame([log])
     df.to_csv(TRADE_LOG_CSV, index=False)
+
 
     if total_shares == shares_sold:
         chatgpt_portfolio = chatgpt_portfolio[chatgpt_portfolio["ticker"] != ticker]
@@ -737,7 +850,7 @@ If this is a mistake, enter 1. """
 
 def daily_results(chatgpt_portfolio: pd.DataFrame, cash: float) -> None:
     """Print daily price updates and performance metrics (incl. CAPM)."""
-    portfolio_dict: list[dict[str, object]] = chatgpt_portfolio.to_dict(orient="records")
+    portfolio_dict: list[dict[Any, Any]] = chatgpt_portfolio.to_dict(orient="records")
     today = check_weekend()
 
     rows: list[list[str]] = []
@@ -745,7 +858,11 @@ def daily_results(chatgpt_portfolio: pd.DataFrame, cash: float) -> None:
 
     end_d = last_trading_date()                           # Fri on weekends
     start_d = (end_d - pd.Timedelta(days=4)).normalize()  # go back enough to capture 2 sessions even around holidays
-    for stock in portfolio_dict + [{"ticker": "IWO"}, {"ticker": "XBI"}, {"ticker": "SPY"}, {"ticker": "IWM"}]:
+    
+    benchmarks = load_benchmarks()  # reads tickers.json or returns defaults
+    benchmark_entries = [{"ticker": t} for t in benchmarks]
+
+    for stock in portfolio_dict + benchmark_entries:
         ticker = str(stock["ticker"]).upper()
         try:
             fetch = download_price_data(ticker, start=start_d, end=(end_d + pd.Timedelta(days=1)), progress=False)
@@ -783,7 +900,7 @@ def daily_results(chatgpt_portfolio: pd.DataFrame, cash: float) -> None:
         print(f"Cash balance: ${cash:,.2f}")
         return
 
-    totals["Date"] = pd.to_datetime(totals["Date"])  # tolerate ISO strings
+    totals["Date"] = pd.to_datetime(totals["Date"], format="mixed", errors="coerce")  # tolerate ISO strings
     totals = totals.sort_values("Date")
 
     final_equity = float(totals.iloc[-1]["Total Equity"])
@@ -812,7 +929,13 @@ def daily_results(chatgpt_portfolio: pd.DataFrame, cash: float) -> None:
         print(chatgpt_portfolio)
         print(f"Cash balance: ${cash:,.2f}")
         print(f"Latest ChatGPT Equity: ${final_equity:,.2f}")
-        print(f"Maximum Drawdown: {max_drawdown:.2%} (on {mdd_date.date()})")
+        if hasattr(mdd_date, "date") and not isinstance(mdd_date, (str, int)):
+            mdd_date_str = mdd_date.date()
+        elif hasattr(mdd_date, "strftime") and not isinstance(mdd_date, (str, int)):
+            mdd_date_str = mdd_date.strftime("%Y-%m-%d")
+        else:
+            mdd_date_str = str(mdd_date)
+        print(f"Maximum Drawdown: {max_drawdown:.2%} (on {mdd_date_str})")
         return
 
     # Risk-free config
@@ -829,7 +952,16 @@ def daily_results(chatgpt_portfolio: pd.DataFrame, cash: float) -> None:
     downside_std = float((downside.pow(2).mean()) ** 0.5) if not downside.empty else np.nan
 
     # Total return over the window
-    period_return = float((1 + r).prod() - 1)
+    r_numeric = pd.to_numeric(r, errors="coerce")
+    r_numeric = r_numeric[~r_numeric.isna()].astype(float)
+    # Filter out any non-finite values to ensure only valid floats are used
+    r_numeric = r_numeric[np.isfinite(r_numeric)]
+    # Only use numeric values for the calculation
+    if len(r_numeric) > 0:
+        arr = np.asarray(r_numeric.values, dtype=float)
+        period_return = float(np.prod(1 + arr) - 1) if arr.size > 0 else float('nan')
+    else:
+        period_return = float('nan')
 
     # Sharpe / Sortino
     sharpe_period = (period_return - rf_period) / (std_daily * np.sqrt(n_days)) if std_daily > 0 else np.nan
@@ -854,7 +986,7 @@ def daily_results(chatgpt_portfolio: pd.DataFrame, cash: float) -> None:
         mkt_ret = spx["Close"].astype(float).pct_change().dropna()
 
         # Align portfolio & market returns
-        common_idx = r.index.intersection(mkt_ret.index)
+        common_idx = r.index.intersection(list(mkt_ret.index))
         if len(common_idx) >= 2:
             rp = (r.reindex(common_idx).astype(float) - rf_daily)   # portfolio excess
             rm = (mkt_ret.reindex(common_idx).astype(float) - rf_daily)  # market excess
@@ -880,14 +1012,15 @@ def daily_results(chatgpt_portfolio: pd.DataFrame, cash: float) -> None:
     )
     spx_norm = spx_norm_fetch.df
     spx_value = np.nan
+    starting_equity = np.nan  # Ensure starting_equity is always defined
     if not spx_norm.empty:
         initial_price = float(spx_norm["Close"].iloc[0])
         price_now = float(spx_norm["Close"].iloc[-1])
         try:
             starting_equity = float(input("what was your starting equity? "))
-            spx_value = (starting_equity / initial_price) * price_now
         except Exception:
-            starting_equity = np.nan
+            print("Invalid input for starting equity. Defaulting to NaN.")
+        spx_value = (starting_equity / initial_price) * price_now if not np.isnan(starting_equity) else np.nan
 
     # -------- Pretty Printing --------
     print("\n" + "=" * 64)
@@ -907,7 +1040,13 @@ def daily_results(chatgpt_portfolio: pd.DataFrame, cash: float) -> None:
         return (fmt.format(x) if not (x is None or (isinstance(x, float) and np.isnan(x))) else "N/A")
 
     print("\n[ Risk & Return ]")
-    print(f"{'Max Drawdown:':32} {fmt_or_na(max_drawdown, '{:.2%}'):>15}   on {mdd_date.date()}")
+    if hasattr(mdd_date, "date") and not isinstance(mdd_date, (str, int)):
+        mdd_date_str = mdd_date.date()
+    elif hasattr(mdd_date, "strftime") and not isinstance(mdd_date, (str, int)):
+        mdd_date_str = mdd_date.strftime("%Y-%m-%d")
+    else:
+        mdd_date_str = str(mdd_date)
+    print(f"{'Max Drawdown:':32} {fmt_or_na(max_drawdown, '{:.2%}'):>15}   on {mdd_date_str}")
     print(f"{'Sharpe Ratio (period):':32} {fmt_or_na(sharpe_period, '{:.4f}'):>15}")
     print(f"{'Sharpe Ratio (annualized):':32} {fmt_or_na(sharpe_annual, '{:.4f}'):>15}")
     print(f"{'Sortino Ratio (period):':32} {fmt_or_na(sortino_period, '{:.4f}'):>15}")
@@ -967,7 +1106,7 @@ def load_latest_portfolio_state(
         return portfolio, cash
 
     non_total = df[df["Ticker"] != "TOTAL"].copy()
-    non_total["Date"] = pd.to_datetime(non_total["Date"])
+    non_total["Date"] = pd.to_datetime(non_total["Date"], format="mixed", errors="coerce")
 
     latest_date = non_total["Date"].max()
     latest_tickers = non_total[non_total["Date"] == latest_date].copy()
@@ -999,7 +1138,7 @@ def load_latest_portfolio_state(
     latest_tickers = latest_tickers.reset_index(drop=True).to_dict(orient="records")
 
     df_total = df[df["Ticker"] == "TOTAL"].copy()
-    df_total["Date"] = pd.to_datetime(df_total["Date"])
+    df_total["Date"] = pd.to_datetime(df_total["Date"], format="mixed", errors="coerce")
     latest = df_total.sort_values("Date").iloc[-1]
     cash = float(latest["Cash Balance"])
     return latest_tickers, cash
