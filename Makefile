@@ -22,7 +22,11 @@ activate:
 
 # Run the trading script
 trade: activate
-	python trading_script.py
+	python "Start Your Own/Trading_Script.py"
+
+graph: activate
+	python "Start Your Own/Generate_Graph.py" 
+
 
 # Clean up virtual environment
 clean:
