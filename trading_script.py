@@ -68,6 +68,20 @@ PORTFOLIO_CSV = DATA_DIR / "chatgpt_portfolio_update.csv"
 TRADE_LOG_CSV = DATA_DIR / "chatgpt_trade_log.csv"
 DEFAULT_BENCHMARKS = ["IWO", "XBI", "SPY", "IWM"]
 
+# Set up logger for this module
+logger = logging.getLogger(__name__)
+
+# Log initial global state configuration (only when run as main script)
+def _log_initial_state():
+    """Log the initial global file path configuration."""
+    logger.info("=== Trading Script Initial Configuration ===")
+    logger.info("Script directory: %s", SCRIPT_DIR)
+    logger.info("Data directory: %s", DATA_DIR)
+    logger.info("Portfolio CSV: %s", PORTFOLIO_CSV)
+    logger.info("Trade log CSV: %s", TRADE_LOG_CSV)
+    logger.info("Default benchmarks: %s", DEFAULT_BENCHMARKS)
+    logger.info("==============================================")
+
 # ------------------------------
 # Configuration helpers — benchmark tickers (tickers.json)
 # ------------------------------
@@ -396,7 +410,12 @@ def _ensure_df(portfolio: pd.DataFrame | dict[str, list[object]] | list[dict[str
     if isinstance(portfolio, pd.DataFrame):
         return portfolio.copy()
     if isinstance(portfolio, (dict, list)):
-        return pd.DataFrame(portfolio)
+        df = pd.DataFrame(portfolio)
+        # Ensure proper columns exist even for empty DataFrames
+        if df.empty:
+            logger.debug("Creating empty portfolio DataFrame with proper column structure")
+            df = pd.DataFrame(columns=["ticker", "shares", "stop_loss", "buy_price", "cost_basis"])
+        return df
     raise TypeError("portfolio must be a DataFrame, dict, or list[dict]")
 
 def process_portfolio(
@@ -1118,13 +1137,11 @@ def daily_results(chatgpt_portfolio: pd.DataFrame, cash: float) -> None:
 # Orchestration
 # ------------------------------
 
-def load_latest_portfolio_state(
-    file: str,
-) -> tuple[pd.DataFrame | list[dict[str, Any]], float]:
-    """Load the most recent portfolio snapshot and cash balance."""
-    logger.info("Reading CSV file: %s", file)
-    df = pd.read_csv(file)
-    logger.info("Successfully read CSV file: %s", file)
+def load_latest_portfolio_state() -> tuple[pd.DataFrame | list[dict[str, Any]], float]:
+    """Load the most recent portfolio snapshot and cash balance from global PORTFOLIO_CSV."""
+    logger.info("Reading CSV file: %s", PORTFOLIO_CSV)
+    df = pd.read_csv(PORTFOLIO_CSV)
+    logger.info("Successfully read CSV file: %s", PORTFOLIO_CSV)
     if df.empty:
         portfolio = pd.DataFrame(columns=["ticker", "shares", "stop_loss", "buy_price", "cost_basis"])
         print("Portfolio CSV is empty. Returning set amount of cash for creating portfolio.")
@@ -1175,13 +1192,12 @@ def load_latest_portfolio_state(
     return latest_tickers, cash
 
 
-def main(file: str, data_dir: Path | None = None) -> None:
+def main(data_dir: Path | None = None) -> None:
     """Check versions, then run the trading script."""
-    chatgpt_portfolio, cash = load_latest_portfolio_state(file)
-    print(file)
     if data_dir is not None:
         set_data_dir(data_dir)
-
+    
+    chatgpt_portfolio, cash = load_latest_portfolio_state()
     chatgpt_portfolio, cash = process_portfolio(chatgpt_portfolio, cash)
     daily_results(chatgpt_portfolio, cash)
 
@@ -1189,11 +1205,7 @@ def main(file: str, data_dir: Path | None = None) -> None:
 if __name__ == "__main__":
     import argparse
 
-    # Default CSV path resolution (keep your existing logic)
-    csv_path = PORTFOLIO_CSV if PORTFOLIO_CSV.exists() else (SCRIPT_DIR / "chatgpt_portfolio_update.csv")
-
     parser = argparse.ArgumentParser()
-    parser.add_argument("--file", default=str(csv_path), help="Path to chatgpt_portfolio_update.csv")
     parser.add_argument("--data-dir", default=None, help="Optional data directory")
     parser.add_argument("--asof", default=None, help="Treat this YYYY-MM-DD as 'today' (e.g., 2025-08-27)")
     parser.add_argument("--log-level", default="INFO", 
@@ -1208,13 +1220,11 @@ if __name__ == "__main__":
         format='🔥 %(asctime)s - %(filename)s:%(lineno)d - %(levelname)s - %(message)s'
     )
 
-    # Log all command-line arguments
+    # Log initial global state and command-line arguments
+    _log_initial_state()
     logger.info("Script started with arguments: %s", vars(args))
 
     if args.asof:
         set_asof(args.asof)
 
-    if not Path(args.file).exists():
-        print("No portfolio CSV found. Create one or run main() with your file path.")
-    else:
-        main(args.file, Path(args.data_dir) if args.data_dir else None)
+    main(Path(args.data_dir) if args.data_dir else None)
