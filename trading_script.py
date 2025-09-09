@@ -1193,7 +1193,20 @@ if __name__ == "__main__":
     parser.add_argument("--file", default=str(csv_path), help="Path to chatgpt_portfolio_update.csv")
     parser.add_argument("--data-dir", default=None, help="Optional data directory")
     parser.add_argument("--asof", default=None, help="Treat this YYYY-MM-DD as 'today' (e.g., 2025-08-27)")
+    parser.add_argument("--log-level", default="INFO", 
+                       choices=["DEBUG", "INFO", "WARNING", "ERROR", "CRITICAL"],
+                       help="Set the logging level (default: INFO)")
     args = parser.parse_args()
+
+    
+    # Configure logging level
+    logging.basicConfig(
+        level=getattr(logging, args.log_level.upper()),
+        format='🔥 %(asctime)s - %(filename)s:%(lineno)d - %(levelname)s - %(message)s'
+    )
+
+    # Log all command-line arguments
+    logger.info("Script started with arguments: %s", vars(args))
 
     if args.asof:
         set_asof(args.asof)
