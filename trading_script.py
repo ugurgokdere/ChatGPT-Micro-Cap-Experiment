@@ -379,10 +379,13 @@ def download_price_data(ticker: str, **kwargs: Any) -> FetchResult:
 
 def set_data_dir(data_dir: Path) -> None:
     global DATA_DIR, PORTFOLIO_CSV, TRADE_LOG_CSV
+    logger.info("Setting data directory: %s", data_dir)
     DATA_DIR = Path(data_dir)
+    logger.debug("Creating data directory if it doesn't exist: %s", DATA_DIR)
     os.makedirs(DATA_DIR, exist_ok=True)
     PORTFOLIO_CSV = DATA_DIR / "chatgpt_portfolio_update.csv"
     TRADE_LOG_CSV = DATA_DIR / "chatgpt_trade_log.csv"
+    logger.info("Data directory configured - Portfolio CSV: %s, Trade Log CSV: %s", PORTFOLIO_CSV, TRADE_LOG_CSV)
 
 
 # ------------------------------
