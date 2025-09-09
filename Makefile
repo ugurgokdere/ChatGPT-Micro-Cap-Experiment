@@ -22,10 +22,10 @@ activate:
 
 # Run the trading script
 trade: activate
-	python "Start Your Own/Trading_Script.py"
+	python trading_script.py $(ARGS)
 
 graph: activate
-	python "Start Your Own/Generate_Graph.py" 
+	python "Start Your Own/Generate_Graph.py" $(ARGS) 
 
 
 # Clean up virtual environment
