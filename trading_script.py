@@ -84,9 +84,13 @@ def _read_json_file(path: Path) -> Optional[Dict]:
     - Other IO errors -> log a warning and return None
     """
     try:
+        logger.info("Reading JSON file: %s", path)
         with path.open("r", encoding="utf-8") as fh:
-            return json.load(fh)
+            result = json.load(fh)
+            logger.info("Successfully read JSON file: %s", path)
+            return result
     except FileNotFoundError:
+        logger.info("JSON file not found: %s", path)
         return None
     except json.JSONDecodeError as exc:
         logger.warning("tickers.json present but malformed: %s -> %s. Falling back to defaults.", path, exc)
@@ -459,14 +463,18 @@ Would you like to log a manual trade? Enter 'b' for buy, 's' for sell, or press 
                     }
                     # --- Manual BUY MOO logging ---
                     if os.path.exists(TRADE_LOG_CSV):
+                        logger.info("Reading CSV file: %s", TRADE_LOG_CSV)
                         df_log = pd.read_csv(TRADE_LOG_CSV)
+                        logger.info("Successfully read CSV file: %s", TRADE_LOG_CSV)
                         if df_log.empty:
                             df_log = pd.DataFrame([log])
                         else:
                             df_log = pd.concat([df_log, pd.DataFrame([log])], ignore_index=True)
                     else:
                         df_log = pd.DataFrame([log])
+                    logger.info("Writing CSV file: %s", TRADE_LOG_CSV)
                     df_log.to_csv(TRADE_LOG_CSV, index=False)
+                    logger.info("Successfully wrote CSV file: %s", TRADE_LOG_CSV)
 
                     rows = portfolio_df.loc[portfolio_df["ticker"].astype(str).str.upper() == ticker.upper()]
                     if rows.empty:
@@ -603,11 +611,15 @@ Would you like to log a manual trade? Enter 'b' for buy, 's' for sell, or press 
 
     df_out = pd.DataFrame(results)
     if PORTFOLIO_CSV.exists():
+        logger.info("Reading CSV file: %s", PORTFOLIO_CSV)
         existing = pd.read_csv(PORTFOLIO_CSV)
+        logger.info("Successfully read CSV file: %s", PORTFOLIO_CSV)
         existing = existing[existing["Date"] != str(today_iso)]
         print("Saving results to CSV...")
         df_out = pd.concat([existing, df_out], ignore_index=True)
+    logger.info("Writing CSV file: %s", PORTFOLIO_CSV)
     df_out.to_csv(PORTFOLIO_CSV, index=False)
+    logger.info("Successfully wrote CSV file: %s", PORTFOLIO_CSV)
 
     return portfolio_df, cash
 
@@ -639,14 +651,18 @@ def log_sell(
     portfolio = portfolio[portfolio["ticker"] != ticker]
 
     if TRADE_LOG_CSV.exists():
+        logger.info("Reading CSV file: %s", TRADE_LOG_CSV)
         df = pd.read_csv(TRADE_LOG_CSV)
+        logger.info("Successfully read CSV file: %s", TRADE_LOG_CSV)
         if df.empty:
             df = pd.DataFrame([log])
         else:
             df = pd.concat([df, pd.DataFrame([log])], ignore_index=True)
     else:
         df = pd.DataFrame([log])
+    logger.info("Writing CSV file: %s", TRADE_LOG_CSV)
     df.to_csv(TRADE_LOG_CSV, index=False)
+    logger.info("Successfully wrote CSV file: %s", TRADE_LOG_CSV)
     return portfolio
 
 def log_manual_buy(
@@ -710,14 +726,18 @@ def log_manual_buy(
         "Reason": "MANUAL BUY LIMIT - Filled",
     }
     if os.path.exists(TRADE_LOG_CSV):
+        logger.info("Reading CSV file: %s", TRADE_LOG_CSV)
         df = pd.read_csv(TRADE_LOG_CSV)
+        logger.info("Successfully read CSV file: %s", TRADE_LOG_CSV)
         if df.empty:
             df = pd.DataFrame([log])
         else:
             df = pd.concat([df, pd.DataFrame([log])], ignore_index=True)
     else:
         df = pd.DataFrame([log])
+    logger.info("Writing CSV file: %s", TRADE_LOG_CSV)
     df.to_csv(TRADE_LOG_CSV, index=False)
+    logger.info("Successfully wrote CSV file: %s", TRADE_LOG_CSV)
 
     rows = chatgpt_portfolio.loc[chatgpt_portfolio["ticker"].str.upper() == ticker.upper()]
     if rows.empty:
@@ -819,14 +839,18 @@ If this is a mistake, enter 1. """
         "Sell Price": exec_price,
     }
     if os.path.exists(TRADE_LOG_CSV):
+        logger.info("Reading CSV file: %s", TRADE_LOG_CSV)
         df = pd.read_csv(TRADE_LOG_CSV)
+        logger.info("Successfully read CSV file: %s", TRADE_LOG_CSV)
         if df.empty:
             df = pd.DataFrame([log])
         else:
             df = pd.concat([df, pd.DataFrame([log])], ignore_index=True)
     else:
         df = pd.DataFrame([log])
+    logger.info("Writing CSV file: %s", TRADE_LOG_CSV)
     df.to_csv(TRADE_LOG_CSV, index=False)
+    logger.info("Successfully wrote CSV file: %s", TRADE_LOG_CSV)
 
 
     if total_shares == shares_sold:
@@ -881,7 +905,9 @@ def daily_results(chatgpt_portfolio: pd.DataFrame, cash: float) -> None:
             raise Exception(f"Download for {ticker} failed. {e} Try checking internet connection.")
 
     # Read portfolio history
+    logger.info("Reading CSV file: %s", PORTFOLIO_CSV)
     chatgpt_df = pd.read_csv(PORTFOLIO_CSV)
+    logger.info("Successfully read CSV file: %s", PORTFOLIO_CSV)
 
     # Use only TOTAL rows, sorted by date
     totals = chatgpt_df[chatgpt_df["Ticker"] == "TOTAL"].copy()
@@ -1093,7 +1119,9 @@ def load_latest_portfolio_state(
     file: str,
 ) -> tuple[pd.DataFrame | list[dict[str, Any]], float]:
     """Load the most recent portfolio snapshot and cash balance."""
+    logger.info("Reading CSV file: %s", file)
     df = pd.read_csv(file)
+    logger.info("Successfully read CSV file: %s", file)
     if df.empty:
         portfolio = pd.DataFrame(columns=["ticker", "shares", "stop_loss", "buy_price", "cost_basis"])
         print("Portfolio CSV is empty. Returning set amount of cash for creating portfolio.")
