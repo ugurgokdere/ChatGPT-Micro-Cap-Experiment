@@ -34,3 +34,4 @@ clean:
 	@echo "Virtual environment removed"
 
 .PHONY: venv install setup activate trade clean
+
