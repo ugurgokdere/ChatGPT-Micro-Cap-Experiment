@@ -172,9 +172,13 @@ def last_trading_date(today: datetime | None = None) -> pd.Timestamp:
     """Return last trading date (Mon–Fri), mapping Sat/Sun -> Fri."""
     dt = pd.Timestamp(today or _effective_now())
     if dt.weekday() == 5:  # Sat -> Fri
-        return (dt - pd.Timedelta(days=1)).normalize()
+        friday_date = (dt - pd.Timedelta(days=1)).normalize()
+        logger.info("🗓️  Script running on Saturday - using Friday's data (%s) instead of today's date", friday_date.date())
+        return friday_date
     if dt.weekday() == 6:  # Sun -> Fri
-        return (dt - pd.Timedelta(days=2)).normalize()
+        friday_date = (dt - pd.Timedelta(days=2)).normalize()
+        logger.info("🗓️  Script running on Sunday - using Friday's data (%s) instead of today's date", friday_date.date())
+        return friday_date
     return dt.normalize()
 
 def check_weekend() -> str:
