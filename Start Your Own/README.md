@@ -19,7 +19,8 @@ save their CSV data inside this folder.
 **Processing Portfolio:**
    ```bash
    # ALWAYS include a CSV file of history
-   python trading_script.py --data-dir "Start Your Own"
+
+   python ProcessPortfolio.py --data-dir "Start Your Own"
    ```
 
 **To Save Prior Days:**
