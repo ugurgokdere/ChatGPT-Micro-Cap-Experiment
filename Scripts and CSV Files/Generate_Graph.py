@@ -151,7 +151,7 @@ def main() -> dict:
     final_date = chatgpt_totals["Date"].iloc[-1]
     final_chatgpt = float(chatgpt_totals["Total Equity"].iloc[-1])
     final_spx = float(sp500["SPX Value ($100 Invested)"].iloc[-1])
-    plt.text(final_date, final_chatgpt + 0.3, f"+{final_chatgpt - 100.0:.1f}%", color="blue", fontsize=9)
+    plt.text(final_date, final_chatgpt + 0.5, f"{final_chatgpt - 100.0:.1f}%", color="blue", fontsize=9)
     plt.text(final_date, final_spx + 0.9, f"+{final_spx - 100.0:.1f}%", color="orange", fontsize=9)
 
     # annotate max drawdown
