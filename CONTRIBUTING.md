@@ -15,11 +15,11 @@ We welcome all kinds of contributions!
 - **Report bugs** – Let us know about any unexpected behavior.
 - **Submit pull requests** – Fork the repo, create a branch, make your changes, and open a PR. Please include a description of your changes and test results.
 
-To resolve an [open issue](https://github.com/LuckyOne7777/ChatGPT-Micro-Cap-Experiment/issues), simply make
-a _pull request_ with your fix. __No issue is assigned in this repo__. Please
-__do not__ ask for permission to work on an issue.
+To resolve an [open issue](https://github.com/LuckyOne7777/ChatGPT-Micro-Cap-Experiment/issues),
+simply make a _pull request_ with your fix. __No issue is assigned in this repo__.
+Please __do not__ ask for permission to work on an issue.
 
-Please add `Fixes #{$ISSUE_NUMBER}` to the pull request description that resolves
+Please add `Fixes #{$ISSUE_NUMBER}` to the pull request's description that resolves
 the open issue.
 For example, if the pull request fixes __issue #65__, then please add the following to
 the pull request's description:
