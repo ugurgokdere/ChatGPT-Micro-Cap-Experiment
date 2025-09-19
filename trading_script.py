@@ -173,11 +173,11 @@ def last_trading_date(today: datetime | None = None) -> pd.Timestamp:
     dt = pd.Timestamp(today or _effective_now())
     if dt.weekday() == 5:  # Sat -> Fri
         friday_date = (dt - pd.Timedelta(days=1)).normalize()
-        logger.info("🗓️  Script running on Saturday - using Friday's data (%s) instead of today's date", friday_date.date())
+        logger.info("Script running on Saturday - using Friday's data (%s) instead of today's date", friday_date.date())
         return friday_date
     if dt.weekday() == 6:  # Sun -> Fri
         friday_date = (dt - pd.Timedelta(days=2)).normalize()
-        logger.info("🗓️  Script running on Sunday - using Friday's data (%s) instead of today's date", friday_date.date())
+        logger.info("Script running on Sunday - using Friday's data (%s) instead of today's date", friday_date.date())
         return friday_date
     return dt.normalize()
 
@@ -1233,7 +1233,7 @@ if __name__ == "__main__":
     # Configure logging level
     logging.basicConfig(
         level=getattr(logging, args.log_level.upper()),
-        format='🔥 %(asctime)s - %(filename)s:%(lineno)d - %(levelname)s - %(message)s'
+        format=' %(asctime)s - %(filename)s:%(lineno)d - %(levelname)s - %(message)s'
     )
 
     # Log initial global state and command-line arguments
