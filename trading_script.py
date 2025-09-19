@@ -1156,7 +1156,17 @@ def daily_results(chatgpt_portfolio: pd.DataFrame, cash: float) -> None:
 def load_latest_portfolio_state() -> tuple[pd.DataFrame | list[dict[str, Any]], float]:
     """Load the most recent portfolio snapshot and cash balance from global PORTFOLIO_CSV."""
     logger.info("Reading CSV file: %s", PORTFOLIO_CSV)
-    df = pd.read_csv(PORTFOLIO_CSV)
+    try:
+        df = pd.read_csv(PORTFOLIO_CSV)
+    except FileNotFoundError as e:
+        raise FileNotFoundError(
+        f"Could not find portfolio CSV at {PORTFOLIO_CSV}.\n"
+        "Make sure you're not running trading_script.py directly without the necessary file.\n"
+        "To fix this, either:\n"
+        "  1) Run the wrapper file: 'Start Your Own/ProcessPortfolio.py',\n"
+        "  2) Run: python trading_script.py --data-dir 'Start Your Own'"
+    ) from e
+
     logger.info("Successfully read CSV file: %s", PORTFOLIO_CSV)
     if df.empty:
         portfolio = pd.DataFrame(columns=["ticker", "shares", "stop_loss", "buy_price", "cost_basis"])
