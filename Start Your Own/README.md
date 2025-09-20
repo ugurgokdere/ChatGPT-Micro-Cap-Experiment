@@ -62,7 +62,7 @@ This script updates your portfolio and logs trades.
    - After you hit 'Enter' all calculations for the day are made.
    - Results are saved to `chatgpt_portfolio_update.csv` and any trades are added to `chatgpt_trade_log.csv`.
    - In the terminal, daily results are printed. Copy and paste results into the LLM.
-
+To automate prompts, check out the [Automation Guide](https://github.com/LuckyOne7777/ChatGPT-Micro-Cap-Experiment/blob/main/Other/AUTOMATION_README.md)
 ## Generate_Graph.py
 
 This script draws a graph of your portfolio versus the S&P 500.
