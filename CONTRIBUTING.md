@@ -16,8 +16,7 @@ We welcome all kinds of contributions!
 - **Submit pull requests** – Fork the repo, create a branch, make your changes, and open a PR. Please include a description of your changes and test results.
 
 To resolve an [open issue](https://github.com/LuckyOne7777/ChatGPT-Micro-Cap-Experiment/issues),
-simply make a _pull request_ with your fix. __No issue is assigned in this repo__.
-Please __do not__ ask for permission to work on an issue.
+simply make a _pull request_ with your fix. Feel free to ask if you want an issue to be assigned to you.
 
 Please add `Fixes #{$ISSUE_NUMBER}` to the pull request's description that resolves
 the open issue.
