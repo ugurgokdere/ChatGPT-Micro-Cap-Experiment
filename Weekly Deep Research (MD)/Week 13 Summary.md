@@ -30,4 +30,4 @@ Portfolio is catalyst-driven, risk-managed, and positioned for asymmetric upside
 
 Week 14 is pivotal: FBIO’s FDA decision will test the core thesis and set the tone.
 
-Overall stance: cautiously optimistic, with discipline on stops and readiness to adapt to new informatio
+Overall stance: cautiously optimistic, with discipline on stops and readiness to adapt to new information
