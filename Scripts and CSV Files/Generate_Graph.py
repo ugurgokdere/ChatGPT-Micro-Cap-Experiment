@@ -166,7 +166,7 @@ def main() -> dict:
     # annotate max drawdown
     plt.text(
         dd_date + pd.Timedelta(days=0.5),
-        dd_value - 0.5,
+        dd_value + 3,
         f"{dd_pct:.1f}%",
         color="red",
         fontsize=9,
