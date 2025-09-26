@@ -1,0 +1,74 @@
+{
+  "analysis_date": "2025-09-25T11:57:43.957768",
+  "research_source": "Manual input",
+  "stocks_analyzed": [
+    "MVIS",
+    "OCGN"
+  ],
+  "detailed_analysis": {
+    "MVIS": {
+      "ticker": "MVIS",
+      "current_price": 1.35,
+      "market_cap": 406296000.0,
+      "is_micro_cap": false,
+      "micro_cap_eligible": false,
+      "company_name": "MicroVision Inc",
+      "industry": "Electrical Equipment",
+      "pe_ratio": null,
+      "revenue_growth": -71.3,
+      "assessment_score": 0,
+      "recommendation": "HOLD",
+      "key_factors": [],
+      "compliance_issues": []
+    },
+    "OCGN": {
+      "ticker": "OCGN",
+      "current_price": 1.64,
+      "market_cap": 512172000.0,
+      "is_micro_cap": false,
+      "micro_cap_eligible": false,
+      "company_name": "Ocugen Inc",
+      "industry": "Biotechnology",
+      "pe_ratio": null,
+      "revenue_growth": -41.96,
+      "assessment_score": 0,
+      "recommendation": "HOLD",
+      "key_factors": [],
+      "compliance_issues": []
+    }
+  },
+  "ai_analysis": {
+    "research_tickers": [
+      "MVIS",
+      "OCGN"
+    ],
+    "current_portfolio": [
+      "MVIS",
+      "OCGN"
+    ],
+    "cash_available": 9.15,
+    "ai_analysis": {
+      "analysis": "1. CURRENT PORTFOLIO ASSESSMENT\n\nMVIS (MicroVision Inc) and OCGN (Ocugen Inc) are both currently not classified as micro-cap stocks, with their market capitalizations exceeding the $300 million threshold. Therefore, they do not meet the criteria for inclusion in the micro-cap experiment.\n\n2. MARKET OUTLOOK\n\nThe current market outlook for micro-caps appears favorable. The economic recovery driven by the easing of Covid-19 restrictions is expected to boost small businesses, which could present opportunities for micro-cap stocks. Furthermore, micro-caps typically offer higher returns due to their high-risk, high-reward nature, although they are also more volatile.\n\n3. RECOMMENDED ACTIONS\n\nAction: SELL\n- MVIS (MicroVision Inc) and OCGN (Ocugen Inc)\n- Confidence: HIGH \n- Reasoning: Both stocks do not meet the micro-cap criteria \n- Risk factors to monitor: Potential loss of gains if these stocks appreciate after being sold\n\nAction: BUY \n- New micro-cap opportunities\n- Confidence: MEDIUM\n- Reasoning: To adhere to the experiment's criteria and potentially achieve higher returns\n- Position size: To be determined based on the specific stocks \n- Risk factors to monitor: High volatility and risk associated with micro-cap stocks\n\n4. NEW INVESTMENT THESIS \n\nGiven the current market conditions and the nature of the micro-cap experiment, the new investment thesis should focus on identifying undervalued micro-cap stocks with strong growth potential. These stocks should ideally operate in industries that are expected to benefit from the ongoing economic recovery. Risk management will be crucial and should involve setting stop-loss orders to protect the portfolio from significant losses. Diversification across different industries will also be a key strategy to spread risk. Finally, ongoing monitoring and reevaluation of the portfolio will be necessary due to the high volatility of micro-cap stocks.",
+      "recommendations": [],
+      "thesis": "",
+      "timestamp": "2025-09-25T11:57:43.957719"
+    },
+    "analysis_date": "2025-09-25T11:57:43.957743"
+  },
+  "buy_candidates": [],
+  "sell_recommendations": [],
+  "hold_positions": [
+    {
+      "ticker": "MVIS",
+      "current_price": 1.35,
+      "reason": "Monitor only - Low assessment score",
+      "assessment_score": 0
+    },
+    {
+      "ticker": "OCGN",
+      "current_price": 1.64,
+      "reason": "Monitor only - Low assessment score",
+      "assessment_score": 0
+    }
+  ]
+}

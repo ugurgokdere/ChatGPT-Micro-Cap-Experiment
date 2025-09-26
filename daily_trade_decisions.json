@@ -1,0 +1,112 @@
+[
+  {
+    "date": "2025-08-08T08:38:47.745018",
+    "type": "BUY",
+    "ticker": "MVIS",
+    "shares": 436.029961882,
+    "price": 1.12,
+    "stop_loss": 0.9520000000000001,
+    "total_cost": 488.35355730784005,
+    "reason": "AI",
+    "cash_before": 497.5029,
+    "cash_after": 9.149342692159962
+  },
+  {
+    "date": "2025-09-26T11:40:54.354375",
+    "type": "SELL",
+    "ticker": "OCGN",
+    "shares": 529.0,
+    "price": 1.5,
+    "cost_basis": 0.9499,
+    "total_proceeds": 793.5,
+    "pnl": 291.0029,
+    "pnl_pct": 57.91135909043057,
+    "reason": "profit",
+    "cash_before": 9.15,
+    "cash_after": 802.65
+  },
+  {
+    "date": "2025-09-26T11:42:08.790631",
+    "type": "BUY",
+    "ticker": "MVIS",
+    "shares": 185.34883,
+    "price": 1.29,
+    "stop_loss": 1.0965,
+    "total_cost": 239.0999907,
+    "reason": "low price",
+    "cash_before": 802.65,
+    "cash_after": 563.5500092999999
+  },
+  {
+    "date": "2025-09-26T11:44:35.053761",
+    "type": "BUY",
+    "ticker": "ALDX",
+    "shares": 19.0,
+    "price": 5.01,
+    "stop_loss": 4.65,
+    "total_cost": 95.19,
+    "reason": "investment",
+    "cash_before": 563.55,
+    "cash_after": 468.35999999999996
+  },
+  {
+    "date": "2025-09-26T11:45:20.484752",
+    "type": "BUY",
+    "ticker": "MIST",
+    "shares": 51.0,
+    "price": 1.91,
+    "stop_loss": 1.78,
+    "total_cost": 97.41,
+    "reason": "investment",
+    "cash_before": 468.36,
+    "cash_after": 370.95000000000005
+  },
+  {
+    "date": "2025-09-26T11:45:55.077409",
+    "type": "BUY",
+    "ticker": "TNXP",
+    "shares": 4.0,
+    "price": 24.7,
+    "stop_loss": 22.2,
+    "total_cost": 98.8,
+    "reason": "investment",
+    "cash_before": 370.95,
+    "cash_after": 272.15
+  },
+  {
+    "date": "2025-09-26T11:46:26.919813",
+    "type": "BUY",
+    "ticker": "PDSB",
+    "shares": 50.0,
+    "price": 1.06,
+    "stop_loss": 0.95,
+    "total_cost": 53.0,
+    "reason": "investment",
+    "cash_before": 272.15,
+    "cash_after": 219.14999999999998
+  },
+  {
+    "date": "2025-09-26T11:47:05.909271",
+    "type": "BUY",
+    "ticker": "DUOT",
+    "shares": 13.0,
+    "price": 7.52,
+    "stop_loss": 6.75,
+    "total_cost": 97.75999999999999,
+    "reason": "investment",
+    "cash_before": 219.15,
+    "cash_after": 121.39000000000001
+  },
+  {
+    "date": "2025-09-26T11:47:44.287221",
+    "type": "BUY",
+    "ticker": "REKR",
+    "shares": 56.0,
+    "price": 1.79,
+    "stop_loss": 1.61,
+    "total_cost": 100.24000000000001,
+    "reason": "investment",
+    "cash_before": 121.39,
+    "cash_after": 121.39
+  }
+]

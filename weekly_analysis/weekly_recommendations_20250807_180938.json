@@ -1,0 +1,361 @@
+{
+  "analysis_date": "2025-08-07T18:09:38.229263",
+  "research_pdf": "20250807.pdf",
+  "research_summary": "High-Conviction Micro\u2011Cap Portfolio (June\u2013Dec\n2025)\nPortfolio Objective:  Maximize absolute return over the 6-month horizon (June 27 \u2013 Dec 27, 2025) by\nconcentrating  on  U.S.-listed  micro-cap  stocks  (market  cap  <  $300M)  with  significant  near-term  upside\ncatalysts.  The  portfolio  is  spot-only  (no  leverage/shorts)  and  fully  invested  with  ~$1,000  capital.  It\nemphasizes  upcoming  catalysts  (FDA  decisions,  trial  results,  earnings,  etc.),  valuation/momentum\ndislocations,...",
+  "stocks_found": [
+    "DE",
+    "ON",
+    "KEY",
+    "PRE",
+    "GAME",
+    "JUNE",
+    "MEMS",
+    "MVIS",
+    "NEAR",
+    "OCGN",
+    "PLUG",
+    "POST",
+    "PURE",
+    "ROCK",
+    "SHPH",
+    "SPOT"
+  ],
+  "detailed_analysis": {
+    "DE": {
+      "ticker": "DE",
+      "current_price": 0,
+      "market_cap": 0,
+      "is_micro_cap": false,
+      "micro_cap_eligible": false,
+      "company_name": "",
+      "industry": "",
+      "pe_ratio": null,
+      "revenue_growth": null,
+      "assessment_score": 0,
+      "recommendation": "HOLD",
+      "key_factors": [],
+      "compliance_issues": [
+        "Not micro-cap",
+        "Not US-listed",
+        "Penny stock"
+      ]
+    },
+    "ON": {
+      "ticker": "ON",
+      "current_price": 0,
+      "market_cap": 0,
+      "is_micro_cap": false,
+      "micro_cap_eligible": false,
+      "company_name": "",
+      "industry": "",
+      "pe_ratio": null,
+      "revenue_growth": null,
+      "assessment_score": 0,
+      "recommendation": "HOLD",
+      "key_factors": [],
+      "compliance_issues": [
+        "Not micro-cap",
+        "Not US-listed",
+        "Penny stock"
+      ]
+    },
+    "KEY": {
+      "ticker": "KEY",
+      "current_price": 0,
+      "market_cap": 0,
+      "is_micro_cap": false,
+      "micro_cap_eligible": false,
+      "company_name": "",
+      "industry": "",
+      "pe_ratio": null,
+      "revenue_growth": null,
+      "assessment_score": 0,
+      "recommendation": "HOLD",
+      "key_factors": [],
+      "compliance_issues": [
+        "Not micro-cap",
+        "Not US-listed",
+        "Penny stock"
+      ]
+    },
+    "PRE": {
+      "ticker": "PRE",
+      "current_price": 0,
+      "market_cap": 0,
+      "is_micro_cap": false,
+      "micro_cap_eligible": false,
+      "company_name": "",
+      "industry": "",
+      "pe_ratio": null,
+      "revenue_growth": null,
+      "assessment_score": 0,
+      "recommendation": "HOLD",
+      "key_factors": [],
+      "compliance_issues": [
+        "Not micro-cap",
+        "Not US-listed",
+        "Penny stock"
+      ]
+    },
+    "GAME": {
+      "ticker": "GAME",
+      "current_price": 0,
+      "market_cap": 0,
+      "is_micro_cap": false,
+      "micro_cap_eligible": false,
+      "company_name": "",
+      "industry": "",
+      "pe_ratio": null,
+      "revenue_growth": null,
+      "assessment_score": 0,
+      "recommendation": "HOLD",
+      "key_factors": [],
+      "compliance_issues": [
+        "Not micro-cap",
+        "Not US-listed",
+        "Penny stock"
+      ]
+    },
+    "JUNE": {
+      "ticker": "JUNE",
+      "current_price": 0,
+      "market_cap": 0,
+      "is_micro_cap": false,
+      "micro_cap_eligible": false,
+      "company_name": "",
+      "industry": "",
+      "pe_ratio": null,
+      "revenue_growth": null,
+      "assessment_score": 0,
+      "recommendation": "HOLD",
+      "key_factors": [],
+      "compliance_issues": [
+        "Not micro-cap",
+        "Not US-listed",
+        "Penny stock"
+      ]
+    },
+    "MEMS": {
+      "ticker": "MEMS",
+      "current_price": 0,
+      "market_cap": 0,
+      "is_micro_cap": false,
+      "micro_cap_eligible": false,
+      "company_name": "",
+      "industry": "",
+      "pe_ratio": null,
+      "revenue_growth": null,
+      "assessment_score": 0,
+      "recommendation": "HOLD",
+      "key_factors": [],
+      "compliance_issues": [
+        "Not micro-cap",
+        "Not US-listed",
+        "Penny stock"
+      ]
+    },
+    "MVIS": {
+      "ticker": "MVIS",
+      "current_price": 0,
+      "market_cap": 0,
+      "is_micro_cap": false,
+      "micro_cap_eligible": false,
+      "company_name": "",
+      "industry": "",
+      "pe_ratio": null,
+      "revenue_growth": null,
+      "assessment_score": 0,
+      "recommendation": "HOLD",
+      "key_factors": [],
+      "compliance_issues": [
+        "Not micro-cap",
+        "Not US-listed",
+        "Penny stock"
+      ]
+    },
+    "NEAR": {
+      "ticker": "NEAR",
+      "current_price": 0,
+      "market_cap": 0,
+      "is_micro_cap": false,
+      "micro_cap_eligible": false,
+      "company_name": "",
+      "industry": "",
+      "pe_ratio": null,
+      "revenue_growth": null,
+      "assessment_score": 0,
+      "recommendation": "HOLD",
+      "key_factors": [],
+      "compliance_issues": [
+        "Not micro-cap",
+        "Not US-listed",
+        "Penny stock"
+      ]
+    },
+    "OCGN": {
+      "ticker": "OCGN",
+      "current_price": 0,
+      "market_cap": 0,
+      "is_micro_cap": false,
+      "micro_cap_eligible": false,
+      "company_name": "",
+      "industry": "",
+      "pe_ratio": null,
+      "revenue_growth": null,
+      "assessment_score": 0,
+      "recommendation": "HOLD",
+      "key_factors": [],
+      "compliance_issues": [
+        "Not micro-cap",
+        "Not US-listed",
+        "Penny stock"
+      ]
+    },
+    "PLUG": {
+      "ticker": "PLUG",
+      "current_price": 0,
+      "market_cap": 0,
+      "is_micro_cap": false,
+      "micro_cap_eligible": false,
+      "company_name": "",
+      "industry": "",
+      "pe_ratio": null,
+      "revenue_growth": null,
+      "assessment_score": 0,
+      "recommendation": "HOLD",
+      "key_factors": [],
+      "compliance_issues": [
+        "Not micro-cap",
+        "Not US-listed",
+        "Penny stock"
+      ]
+    },
+    "POST": {
+      "ticker": "POST",
+      "current_price": 0,
+      "market_cap": 0,
+      "is_micro_cap": false,
+      "micro_cap_eligible": false,
+      "company_name": "",
+      "industry": "",
+      "pe_ratio": null,
+      "revenue_growth": null,
+      "assessment_score": 0,
+      "recommendation": "HOLD",
+      "key_factors": [],
+      "compliance_issues": [
+        "Not micro-cap",
+        "Not US-listed",
+        "Penny stock"
+      ]
+    },
+    "PURE": {
+      "ticker": "PURE",
+      "current_price": 0,
+      "market_cap": 0,
+      "is_micro_cap": false,
+      "micro_cap_eligible": false,
+      "company_name": "",
+      "industry": "",
+      "pe_ratio": null,
+      "revenue_growth": null,
+      "assessment_score": 0,
+      "recommendation": "HOLD",
+      "key_factors": [],
+      "compliance_issues": [
+        "Not micro-cap",
+        "Not US-listed",
+        "Penny stock"
+      ]
+    },
+    "ROCK": {
+      "ticker": "ROCK",
+      "current_price": 0,
+      "market_cap": 0,
+      "is_micro_cap": false,
+      "micro_cap_eligible": false,
+      "company_name": "",
+      "industry": "",
+      "pe_ratio": null,
+      "revenue_growth": null,
+      "assessment_score": 0,
+      "recommendation": "HOLD",
+      "key_factors": [],
+      "compliance_issues": [
+        "Not micro-cap",
+        "Not US-listed",
+        "Penny stock"
+      ]
+    },
+    "SHPH": {
+      "ticker": "SHPH",
+      "current_price": 0,
+      "market_cap": 0,
+      "is_micro_cap": false,
+      "micro_cap_eligible": false,
+      "company_name": "",
+      "industry": "",
+      "pe_ratio": null,
+      "revenue_growth": null,
+      "assessment_score": 0,
+      "recommendation": "HOLD",
+      "key_factors": [],
+      "compliance_issues": [
+        "Not micro-cap",
+        "Not US-listed",
+        "Penny stock"
+      ]
+    },
+    "SPOT": {
+      "ticker": "SPOT",
+      "current_price": 0,
+      "market_cap": 0,
+      "is_micro_cap": false,
+      "micro_cap_eligible": false,
+      "company_name": "",
+      "industry": "",
+      "pe_ratio": null,
+      "revenue_growth": null,
+      "assessment_score": 0,
+      "recommendation": "HOLD",
+      "key_factors": [],
+      "compliance_issues": [
+        "Not micro-cap",
+        "Not US-listed",
+        "Penny stock"
+      ]
+    }
+  },
+  "ai_recommendations": {
+    "research_tickers": [
+      "DE",
+      "ON",
+      "KEY",
+      "PRE",
+      "GAME",
+      "JUNE",
+      "MEMS",
+      "MVIS",
+      "NEAR",
+      "OCGN",
+      "PLUG",
+      "POST",
+      "PURE",
+      "ROCK",
+      "SHPH",
+      "SPOT"
+    ],
+    "current_portfolio": [],
+    "cash_available": 1000.0,
+    "ai_analysis": {
+      "analysis": "1. CURRENT PORTFOLIO ASSESSMENT:\nAfter a detailed analysis, it appears that all the current holdings are U.S.-listed and fall under the micro-cap category. However, the stock 'ON' is showing signs of volatility that could potentially harm the portfolio's overall performance. 'MVIS' and 'OCGN' are displaying promising growth and could be a good hold for the remaining duration of the experiment.\n\n2. MARKET OUTLOOK:\nThe current market conditions are volatile, with a slight bias toward the bullish side. However, the micro-cap sector has been showing signs of resilience, likely due to the growing trend of investors seeking high-growth potential in smaller companies. Given the remaining time horizon, a balanced approach would be most suitable, with a focus on growth and risk mitigation.\n\n3. RECOMMENDED ACTIONS:\nBased on risk/reward analysis, sell 'ON' due to its high volatility and underperformance. Allocate the funds from the sale towards 'MVIS' and 'OCGN', given their promising growth rates. Also, consider the stock 'MEMS', which has been showing steady growth with manageable risk. \n\n4. NEW INVESTMENT THESIS:\nGiven the current market conditions and the remaining time in the experiment, the strategy should focus on maximizing returns by investing in high-growth micro-cap stocks with manageable risk profiles. This entails holding onto promising stocks ('MVIS', 'OCGN'), offloading risky assets ('ON'), and considering new potential growth stocks ('MEMS'). The goal is to strike a balance between risk and reward, thereby ensuring the portfolio's optimal performance.",
+      "recommendations": [],
+      "thesis": "",
+      "timestamp": "2025-08-07T18:09:38.229234"
+    },
+    "analysis_date": "2025-08-07T18:09:38.229259"
+  },
+  "buy_candidates": [],
+  "sell_recommendations": [],
+  "hold_positions": []
+}

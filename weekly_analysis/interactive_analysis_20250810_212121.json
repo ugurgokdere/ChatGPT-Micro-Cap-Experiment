@@ -1,0 +1,219 @@
+{
+  "analysis_date": "2025-08-10T21:21:21.465673",
+  "research_source": "Manual input",
+  "stocks_analyzed": [
+    "NVEC",
+    "ADCT",
+    "SPIR",
+    "HRZN",
+    "MTLS",
+    "NL",
+    "BRT"
+  ],
+  "detailed_analysis": {
+    "NVEC": {
+      "ticker": "NVEC",
+      "current_price": 61.66,
+      "market_cap": 298434400.0,
+      "is_micro_cap": true,
+      "micro_cap_eligible": true,
+      "company_name": "NVE Corp",
+      "industry": "Semiconductors",
+      "pe_ratio": 20.5092,
+      "revenue_growth": -9.21,
+      "assessment_score": 0,
+      "recommendation": "HOLD",
+      "key_factors": [],
+      "compliance_issues": []
+    },
+    "ADCT": {
+      "ticker": "ADCT",
+      "current_price": 2.68,
+      "market_cap": 265802400.00000003,
+      "is_micro_cap": true,
+      "micro_cap_eligible": false,
+      "company_name": "ADC Therapeutics SA",
+      "industry": "Biotechnology",
+      "pe_ratio": null,
+      "revenue_growth": 10.49,
+      "assessment_score": 0,
+      "recommendation": "HOLD",
+      "key_factors": [],
+      "compliance_issues": [
+        "Not US-listed"
+      ]
+    },
+    "SPIR": {
+      "ticker": "SPIR",
+      "current_price": 9.6,
+      "market_cap": 312768000.0,
+      "is_micro_cap": false,
+      "micro_cap_eligible": false,
+      "company_name": "Spire Global Inc",
+      "industry": "Professional Services",
+      "pe_ratio": null,
+      "revenue_growth": -7.2,
+      "assessment_score": 0,
+      "recommendation": "HOLD",
+      "key_factors": [],
+      "compliance_issues": [
+        "Not micro-cap"
+      ]
+    },
+    "HRZN": {
+      "ticker": "HRZN",
+      "current_price": 7.17,
+      "market_cap": 289309500.0,
+      "is_micro_cap": true,
+      "micro_cap_eligible": true,
+      "company_name": "Horizon Technology Finance Corp",
+      "industry": "Financial Services",
+      "pe_ratio": null,
+      "revenue_growth": -54.71,
+      "assessment_score": 0,
+      "recommendation": "HOLD",
+      "key_factors": [],
+      "compliance_issues": []
+    },
+    "MTLS": {
+      "ticker": "MTLS",
+      "current_price": 5.03,
+      "market_cap": 297122100.0,
+      "is_micro_cap": true,
+      "micro_cap_eligible": false,
+      "company_name": "Materialise NV",
+      "industry": "Technology",
+      "pe_ratio": 45.618,
+      "revenue_growth": 2.98,
+      "assessment_score": 0,
+      "recommendation": "HOLD",
+      "key_factors": [],
+      "compliance_issues": [
+        "Not US-listed"
+      ]
+    },
+    "NL": {
+      "ticker": "NL",
+      "current_price": 6.09,
+      "market_cap": 297496500.0,
+      "is_micro_cap": true,
+      "micro_cap_eligible": true,
+      "company_name": "NL Industries Inc",
+      "industry": "Commercial Services & Supplies",
+      "pe_ratio": 4.8738,
+      "revenue_growth": -6.26,
+      "assessment_score": 0,
+      "recommendation": "HOLD",
+      "key_factors": [],
+      "compliance_issues": []
+    },
+    "BRT": {
+      "ticker": "BRT",
+      "current_price": 14.9,
+      "market_cap": 281610000.0,
+      "is_micro_cap": true,
+      "micro_cap_eligible": true,
+      "company_name": "BRT Apartments Corp",
+      "industry": "Real Estate",
+      "pe_ratio": null,
+      "revenue_growth": 2.39,
+      "assessment_score": 0,
+      "recommendation": "HOLD",
+      "key_factors": [],
+      "compliance_issues": []
+    }
+  },
+  "ai_analysis": {
+    "research_tickers": [
+      "NVEC",
+      "ADCT",
+      "SPIR",
+      "HRZN",
+      "MTLS",
+      "NL",
+      "BRT"
+    ],
+    "current_portfolio": [
+      "MVIS",
+      "OCGN"
+    ],
+    "cash_available": 9.15,
+    "ai_analysis": {
+      "analysis": "1. CURRENT PORTFOLIO ASSESSMENT:\n\nOur current holdings, MVIS (MicroVision, Inc.) and OCGN (Ocugen, Inc.), both appear to remain compliant with the micro-cap threshold. However, it's important to monitor the financial health and growth potential of these stocks. MVIS is a leading player in the Lidar technology space, which has significant growth potential, while OCGN is a strong contender in the biotech industry, especially with its COVID-19 vaccine candidate. However, both carry high risk due to their inherent business uncertainties.\n\n2. MARKET OUTLOOK:\n\nThe overall market for micro-caps appears to be positive, with many companies showing strong growth potential. However, one should keep in mind the inherent volatility and risks associated with micro-cap stocks. Therefore, it's crucial to maintain a diversified portfolio and have a robust risk management strategy in place.\n\n3. RECOMMENDED ACTIONS:\n\n- NVEC (NVE Corp): HOLD; Confidence: MEDIUM; While the company operates in the promising semiconductor industry, its high price and relatively large market cap present a high-risk situation. Monitor performance closely.\n\n- ADCT (ADC Therapeutics SA): BUY; Confidence: HIGH; Despite being in a volatile industry, its low price and potential for high reward make it a good addition to the portfolio. Position size: $200.\n\n- SPIR (Spire Global Inc): SELL; Confidence: HIGH; Its market cap is above the micro-cap threshold, and it's advisable to divest from this stock. \n\n- HRZN (Horizon Technology Finance Corp): HOLD; Confidence: LOW; Financial service stocks can be risky, and until more information is available, it's best to hold onto this stock. \n\n- MTLS (Materialise NV): BUY; Confidence: MEDIUM; This tech company seems to have potential for growth. Position size: $150.\n\n- NL (NL Industries Inc): HOLD; Confidence: LOW; With a relatively large market cap and low price, it's not a high-potential stock. \n\n- BRT (BRT Apartments Corp): HOLD; Confidence: MEDIUM; Real estate can be a stable sector, but the company's growth potential isn't clear. Monitor the situation closely.\n\n4. NEW INVESTMENT THESIS:\n\nOur focus remains on maximizing returns within the micro-cap universe by investing in high-growth sectors such as biotechnology and technology while maintaining diversification. We aim to manage risks by carefully monitoring market caps, prices, and industry trends. It's essential to stay adaptive and responsive to market changes and opportunities that present themselves.",
+      "recommendations": [
+        {
+          "action": "BUY",
+          "text": "- adct (adc therapeutics sa): buy; confidence: high; despite being in a volatile industry, its low price and potential for high reward make it a good addition to the portfolio. position size: $200.",
+          "confidence": "medium"
+        },
+        {
+          "action": "BUY",
+          "text": "- mtls (materialise nv): buy; confidence: medium; this tech company seems to have potential for growth. position size: $150.",
+          "confidence": "medium"
+        }
+      ],
+      "thesis": "3. RECOMMENDED ACTIONS:",
+      "timestamp": "2025-08-10T21:21:21.465639"
+    },
+    "analysis_date": "2025-08-10T21:21:21.465658"
+  },
+  "buy_candidates": [],
+  "sell_recommendations": [
+    {
+      "ticker": "MVIS",
+      "reason": "Not in current week's research focus",
+      "current_value": 488.35355730784005,
+      "confidence": "MEDIUM"
+    },
+    {
+      "ticker": "OCGN",
+      "reason": "Not in current week's research focus",
+      "current_value": 502.4971,
+      "confidence": "MEDIUM"
+    }
+  ],
+  "hold_positions": [
+    {
+      "ticker": "NVEC",
+      "current_price": 61.66,
+      "reason": "Monitor only - Low assessment score",
+      "assessment_score": 0
+    },
+    {
+      "ticker": "ADCT",
+      "current_price": 2.68,
+      "reason": "Monitor only - Not US-listed",
+      "assessment_score": 0
+    },
+    {
+      "ticker": "SPIR",
+      "current_price": 9.6,
+      "reason": "Monitor only - Not micro-cap",
+      "assessment_score": 0
+    },
+    {
+      "ticker": "HRZN",
+      "current_price": 7.17,
+      "reason": "Monitor only - Low assessment score",
+      "assessment_score": 0
+    },
+    {
+      "ticker": "MTLS",
+      "current_price": 5.03,
+      "reason": "Monitor only - Not US-listed",
+      "assessment_score": 0
+    },
+    {
+      "ticker": "NL",
+      "current_price": 6.09,
+      "reason": "Monitor only - Low assessment score",
+      "assessment_score": 0
+    },
+    {
+      "ticker": "BRT",
+      "current_price": 14.9,
+      "reason": "Monitor only - Low assessment score",
+      "assessment_score": 0
+    }
+  ]
+}

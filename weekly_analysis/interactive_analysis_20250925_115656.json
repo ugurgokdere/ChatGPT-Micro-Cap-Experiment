@@ -1,0 +1,217 @@
+{
+  "analysis_date": "2025-09-25T11:56:56.247649",
+  "research_source": "Manual input",
+  "stocks_analyzed": [
+    "ADCT",
+    "HRZN",
+    "NVEC",
+    "SPIR",
+    "BRT",
+    "MTLS",
+    "NL"
+  ],
+  "detailed_analysis": {
+    "ADCT": {
+      "ticker": "ADCT",
+      "current_price": 3.56,
+      "market_cap": 400500000.0,
+      "is_micro_cap": false,
+      "micro_cap_eligible": false,
+      "company_name": "ADC Therapeutics SA",
+      "industry": "Biotechnology",
+      "pe_ratio": null,
+      "revenue_growth": 15.73,
+      "assessment_score": 0,
+      "recommendation": "HOLD",
+      "key_factors": [],
+      "compliance_issues": [
+        "Not US-listed"
+      ]
+    },
+    "HRZN": {
+      "ticker": "HRZN",
+      "current_price": 6.22,
+      "market_cap": 264660999.99999994,
+      "is_micro_cap": true,
+      "micro_cap_eligible": true,
+      "company_name": "Horizon Technology Finance Corp",
+      "industry": "Financial Services",
+      "pe_ratio": null,
+      "revenue_growth": -78.34,
+      "assessment_score": 0,
+      "recommendation": "HOLD",
+      "key_factors": [],
+      "compliance_issues": []
+    },
+    "NVEC": {
+      "ticker": "NVEC",
+      "current_price": 66.58,
+      "market_cap": 322247199.99999994,
+      "is_micro_cap": false,
+      "micro_cap_eligible": false,
+      "company_name": "NVE Corp",
+      "industry": "Semiconductors",
+      "pe_ratio": 22.3153,
+      "revenue_growth": -9.21,
+      "assessment_score": 0,
+      "recommendation": "HOLD",
+      "key_factors": [],
+      "compliance_issues": []
+    },
+    "SPIR": {
+      "ticker": "SPIR",
+      "current_price": 11.68,
+      "market_cap": 380534399.99999994,
+      "is_micro_cap": false,
+      "micro_cap_eligible": false,
+      "company_name": "Spire Global Inc",
+      "industry": "Professional Services",
+      "pe_ratio": null,
+      "revenue_growth": -7.2,
+      "assessment_score": 0,
+      "recommendation": "HOLD",
+      "key_factors": [],
+      "compliance_issues": []
+    },
+    "BRT": {
+      "ticker": "BRT",
+      "current_price": 15.82,
+      "market_cap": 298998000.0,
+      "is_micro_cap": true,
+      "micro_cap_eligible": true,
+      "company_name": "BRT Apartments Corp",
+      "industry": "Real Estate",
+      "pe_ratio": null,
+      "revenue_growth": 2.16,
+      "assessment_score": 0,
+      "recommendation": "HOLD",
+      "key_factors": [],
+      "compliance_issues": []
+    },
+    "MTLS": {
+      "ticker": "MTLS",
+      "current_price": 5.83,
+      "market_cap": 344378100.0,
+      "is_micro_cap": false,
+      "micro_cap_eligible": false,
+      "company_name": "Materialise NV",
+      "industry": "Technology",
+      "pe_ratio": 50.9506,
+      "revenue_growth": 2.98,
+      "assessment_score": 0,
+      "recommendation": "HOLD",
+      "key_factors": [],
+      "compliance_issues": [
+        "Not US-listed"
+      ]
+    },
+    "NL": {
+      "ticker": "NL",
+      "current_price": 6.09,
+      "market_cap": 297557400.0,
+      "is_micro_cap": true,
+      "micro_cap_eligible": true,
+      "company_name": "NL Industries Inc",
+      "industry": "Commercial Services & Supplies",
+      "pe_ratio": 5.4813,
+      "revenue_growth": -2.99,
+      "assessment_score": 0,
+      "recommendation": "HOLD",
+      "key_factors": [],
+      "compliance_issues": []
+    }
+  },
+  "ai_analysis": {
+    "research_tickers": [
+      "ADCT",
+      "HRZN",
+      "NVEC",
+      "SPIR",
+      "BRT",
+      "MTLS",
+      "NL"
+    ],
+    "current_portfolio": [
+      "MVIS",
+      "OCGN"
+    ],
+    "cash_available": 9.15,
+    "ai_analysis": {
+      "analysis": "1. CURRENT PORTFOLIO ASSESSMENT:\nThe current positions comprise of MVIS and OCGN. Both these stocks need to be evaluated for their market capitalization to ensure they are in compliance with the micro-cap mandate. Any stocks that exceed the micro-cap limit of $300M should be sold, regardless of their potential, as they do not meet the criteria of the portfolio.\n\n- MVIS (MicroVision Inc.): A check on the current market cap is required. If it exceeds $300M, it should be sold.\n- OCGN (Ocugen Inc.): A similar check is required for OCGN.\n\n2. MARKET OUTLOOK:\nThe market outlook for micro-caps is generally volatile and riskier than larger cap stocks, but they also present significant opportunities for high returns. Given the shorter time frame of 3 months, the focus should be on companies with upcoming catalysts that could drive high returns.\n\n3. RECOMMENDED ACTIONS:\nBased on the weekly research stocks, HRZN, BRT, and NL fall within the micro-cap category and should be considered for potential investment. A detailed analysis of these stocks based on their financial strength, growth potential, risk/reward ratio, and upcoming catalysts is required to provide a specific buy/sell/hold recommendation.\n\n- HRZN (Horizon Technology Finance Corp): BUY, MEDIUM confidence. The company operates in the financial services sector which has been performing well. It also has a decent market cap within the micro-cap limit. The position size and risk factors need to be evaluated based on a detailed analysis.\n- BRT (BRT Apartments Corp): BUY, MEDIUM confidence. As a real estate company, there might be potential for return given the current real estate market conditions. A detailed analysis is required to determine the position size and risk factors.\n- NL (NL Industries Inc): HOLD, LOW confidence. The company operates in the commercial services & supplies industry which might not present significant growth opportunities in the short term.\n\n4. NEW INVESTMENT THESIS:\nThe focus of the portfolio should be on investing in micro-cap stocks that are undervalued and have strong growth potential. The portfolio should be diversified across different sectors to spread the risk. The stocks should be continuously monitored for any changes in their market cap to ensure they meet the micro-cap mandate. Any stocks that exceed the limit should be sold. The portfolio should also be regularly rebalanced to maximize returns and minimize risk.",
+      "recommendations": [
+        {
+          "action": "BUY",
+          "text": "- hrzn (horizon technology finance corp): buy, medium confidence. the company operates in the financial services sector which has been performing well. it also has a decent market cap within the micro-cap limit. the position size and risk factors need to be evaluated based on a detailed analysis.",
+          "confidence": "medium"
+        },
+        {
+          "action": "BUY",
+          "text": "- brt (brt apartments corp): buy, medium confidence. as a real estate company, there might be potential for return given the current real estate market conditions. a detailed analysis is required to determine the position size and risk factors.",
+          "confidence": "medium"
+        }
+      ],
+      "thesis": "The focus of the portfolio should be on investing in micro-cap stocks that are undervalued and have strong growth potential. The portfolio should be diversified across different sectors to spread the risk. The stocks should be continuously monitored for any changes in their market cap to ensure they meet the micro-cap mandate. Any stocks that exceed the limit should be sold. The portfolio should also be regularly rebalanced to maximize returns and minimize risk.",
+      "timestamp": "2025-09-25T11:56:56.247462"
+    },
+    "analysis_date": "2025-09-25T11:56:56.247548"
+  },
+  "buy_candidates": [],
+  "sell_recommendations": [
+    {
+      "ticker": "MVIS",
+      "reason": "Not in current week's research focus",
+      "current_value": 488.35355730784005,
+      "confidence": "MEDIUM"
+    },
+    {
+      "ticker": "OCGN",
+      "reason": "Not in current week's research focus",
+      "current_value": 502.4971,
+      "confidence": "MEDIUM"
+    }
+  ],
+  "hold_positions": [
+    {
+      "ticker": "ADCT",
+      "current_price": 3.56,
+      "reason": "Monitor only - Not US-listed",
+      "assessment_score": 0
+    },
+    {
+      "ticker": "HRZN",
+      "current_price": 6.22,
+      "reason": "Monitor only - Low assessment score",
+      "assessment_score": 0
+    },
+    {
+      "ticker": "NVEC",
+      "current_price": 66.58,
+      "reason": "Monitor only - Low assessment score",
+      "assessment_score": 0
+    },
+    {
+      "ticker": "SPIR",
+      "current_price": 11.68,
+      "reason": "Monitor only - Low assessment score",
+      "assessment_score": 0
+    },
+    {
+      "ticker": "BRT",
+      "current_price": 15.82,
+      "reason": "Monitor only - Low assessment score",
+      "assessment_score": 0
+    },
+    {
+      "ticker": "MTLS",
+      "current_price": 5.83,
+      "reason": "Monitor only - Not US-listed",
+      "assessment_score": 0
+    },
+    {
+      "ticker": "NL",
+      "current_price": 6.09,
+      "reason": "Monitor only - Low assessment score",
+      "assessment_score": 0
+    }
+  ]
+}

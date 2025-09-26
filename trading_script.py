@@ -25,9 +25,16 @@ import warnings
 
 import numpy as np
 import pandas as pd
+<<<<<<< Updated upstream
 import yfinance as yf
 import json
 import logging
+=======
+from typing import Any, cast
+import os
+import time
+import finnhub
+>>>>>>> Stashed changes
 
 # Optional pandas-datareader import for Stooq access
 try:
@@ -417,6 +424,95 @@ def set_data_dir(data_dir: Path) -> None:
     TRADE_LOG_CSV = DATA_DIR / "chatgpt_trade_log.csv"
     logger.info("Data directory configured - Portfolio CSV: %s, Trade Log CSV: %s", PORTFOLIO_CSV, TRADE_LOG_CSV)
 
+# Load Finnhub API key from env.local file
+def load_finnhub_key():
+    env_file = SCRIPT_DIR / "env.local"
+    finnhub_key = os.getenv("FINNHUB_API_KEY", "demo")
+    
+    if env_file.exists():
+        with open(env_file, 'r') as f:
+            for line in f:
+                line = line.strip()
+                if line.startswith("FINNHUB_API_KEY="):
+                    finnhub_key = line.split("=", 1)[1]
+    return finnhub_key
+
+FINNHUB_API_KEY = load_finnhub_key()
+
+def get_stock_data_with_finnhub(ticker: str, period: str = "1d") -> pd.DataFrame:
+    """Get stock data using Finnhub API only."""
+    try:
+        finnhub_client = finnhub.Client(api_key=FINNHUB_API_KEY)
+        
+        if period == "1d":
+            # Get current quote
+            quote = finnhub_client.quote(ticker)
+            
+            if quote and 'c' in quote and quote['c'] > 0:
+                price = quote['c']  # Current price
+                open_price = quote.get('o', price)  # Open price
+                high_price = quote.get('h', price)  # High price
+                low_price = quote.get('l', price)   # Low price
+                
+                today_date = pd.Timestamp.now().normalize()
+                data = pd.DataFrame({
+                    'Open': [open_price],
+                    'High': [high_price],
+                    'Low': [low_price], 
+                    'Close': [price],
+                    'Volume': [0],  # Volume not available in quote
+                    'Adj Close': [price]
+                }, index=[today_date])
+                print(f"Successfully fetched {ticker} price ${price:.2f} from Finnhub")
+                return data
+                
+        elif period == "2d":
+            # For 2d data, get historical data
+            import time
+            end_time = int(time.time())
+            start_time = end_time - (2 * 24 * 60 * 60)  # 2 days ago
+            
+            candles = finnhub_client.stock_candles(ticker, 'D', start_time, end_time)
+            
+            if candles and 's' in candles and candles['s'] == 'ok' and len(candles['c']) >= 2:
+                dates = [pd.Timestamp.fromtimestamp(ts).normalize() for ts in candles['t']]
+                data = pd.DataFrame({
+                    'Open': candles['o'],
+                    'High': candles['h'],
+                    'Low': candles['l'],
+                    'Close': candles['c'],
+                    'Volume': candles['v'],
+                    'Adj Close': candles['c']
+                }, index=dates)
+                print(f"Successfully fetched {ticker} 2-day data from Finnhub")
+                return data
+                
+    except Exception as e:
+        print(f"Finnhub failed for {ticker}: {e}")
+    
+    # If Finnhub fails, allow manual price input for 1d period
+    if period == "1d":
+        print(f"\nFinnhub failed for {ticker}.")
+        try:
+            manual_price = input(f"Enter current price for {ticker} (or press Enter to skip): ").strip()
+            if manual_price:
+                price = float(manual_price)
+                today_date = pd.Timestamp.now().normalize()
+                data = pd.DataFrame({
+                    'Open': [price],
+                    'High': [price],
+                    'Low': [price], 
+                    'Close': [price],
+                    'Volume': [0],
+                    'Adj Close': [price]
+                }, index=[today_date])
+                print(f"Using manually entered price ${price:.2f} for {ticker}")
+                return data
+        except (ValueError, KeyboardInterrupt):
+            pass
+    
+    return pd.DataFrame()
+
 
 # ------------------------------
 # Portfolio operations
@@ -582,6 +678,7 @@ Would you like to log a manual trade? Enter 'b' for buy, 's' for sell, or press 
     # ------- Daily pricing + stop-loss execution -------
     s, e = trading_day_window()
     for _, stock in portfolio_df.iterrows():
+<<<<<<< Updated upstream
         ticker = str(stock["ticker"]).upper()
         shares = int(stock["shares"]) if not pd.isna(stock["shares"]) else 0
         cost = float(stock["buy_price"]) if not pd.isna(stock["buy_price"]) else 0.0
@@ -590,6 +687,13 @@ Would you like to log a manual trade? Enter 'b' for buy, 's' for sell, or press 
 
         fetch = download_price_data(ticker, start=s, end=e, auto_adjust=False, progress=False)
         data = fetch.df
+=======
+        ticker = stock["ticker"]
+        shares = int(stock["shares"])
+        cost = stock["buy_price"]
+        stop = stock["stop_loss"]
+        data = get_stock_data_with_finnhub(ticker, period="1d")
+>>>>>>> Stashed changes
 
         if data.empty:
             print(f"No data for {ticker} (source={fetch.source}).")
@@ -723,6 +827,7 @@ def log_manual_buy(
             print("Returning...")
             return cash, chatgpt_portfolio
 
+<<<<<<< Updated upstream
     if not isinstance(chatgpt_portfolio, pd.DataFrame) or chatgpt_portfolio.empty:
         chatgpt_portfolio = pd.DataFrame(
             columns=["ticker", "shares", "stop_loss", "buy_price", "cost_basis"]
@@ -731,6 +836,10 @@ def log_manual_buy(
     s, e = trading_day_window()
     fetch = download_price_data(ticker, start=s, end=e, auto_adjust=False, progress=False)
     data = fetch.df
+=======
+    data = get_stock_data_with_finnhub(ticker, period="1d")
+    data = cast(pd.DataFrame, data)
+>>>>>>> Stashed changes
     if data.empty:
         print(f"Manual buy for {ticker} failed: no market data available (source={fetch.source}).")
         return cash, chatgpt_portfolio
@@ -843,10 +952,15 @@ If this is a mistake, enter 1, or hit Enter."""
     if shares_sold > total_shares:
         print(f"Manual sell for {ticker} failed: trying to sell {shares_sold} shares but only own {total_shares}.")
         return cash, chatgpt_portfolio
+<<<<<<< Updated upstream
 
     s, e = trading_day_window()
     fetch = download_price_data(ticker, start=s, end=e, auto_adjust=False, progress=False)
     data = fetch.df
+=======
+    data = get_stock_data_with_finnhub(ticker, period="1d")
+    data = cast(pd.DataFrame, data)
+>>>>>>> Stashed changes
     if data.empty:
         print(f"Manual sell for {ticker} failed: no market data available (source={fetch.source}).")
         return cash, chatgpt_portfolio
@@ -927,8 +1041,13 @@ def daily_results(chatgpt_portfolio: pd.DataFrame, cash: float) -> None:
     for stock in portfolio_dict + benchmark_entries:
         ticker = str(stock["ticker"]).upper()
         try:
+<<<<<<< Updated upstream
             fetch = download_price_data(ticker, start=start_d, end=(end_d + pd.Timedelta(days=1)), progress=False)
             data = fetch.df
+=======
+            data = get_stock_data_with_finnhub(ticker, period="2d")
+            data = cast(pd.DataFrame, data)
+>>>>>>> Stashed changes
             if data.empty or len(data) < 2:
                 rows.append([ticker, "—", "—", "—"])
                 continue
@@ -1007,6 +1126,7 @@ def daily_results(chatgpt_portfolio: pd.DataFrame, cash: float) -> None:
     rf_daily = (1 + rf_annual) ** (1 / 252) - 1
     rf_period = (1 + rf_daily) ** n_days - 1
 
+<<<<<<< Updated upstream
     # Stats
     mean_daily = float(r.mean())
     std_daily = float(r.std(ddof=1))
@@ -1136,6 +1256,28 @@ def daily_results(chatgpt_portfolio: pd.DataFrame, cash: float) -> None:
     print(f"{'Cash Balance:':32} ${cash:>14,.2f}")
 
     print("\n[ Holdings ]")
+=======
+    # Output
+    print(f"Total Sharpe Ratio over {n_days} days: {sharpe_total:.4f}")
+    print(f"Total Sortino Ratio over {n_days} days: {sortino_total:.4f}")
+    print(f"Latest ChatGPT Equity: ${final_equity:.2f}")
+    # Get S&P 500 data using Finnhub
+    try:
+        finnhub_client = finnhub.Client(api_key=FINNHUB_API_KEY)
+        spy_quote = finnhub_client.quote("SPY")
+        if spy_quote and 'c' in spy_quote:
+            current_spy = spy_quote['c']
+            # Estimate based on SPY starting around $410 on 2025-06-27
+            estimated_start = 410.0
+            scaling_factor = 100 / estimated_start
+            spx_value = current_spy * scaling_factor
+            print(f"$100 Invested in the S&P 500 (SPY): ${spx_value:.2f}")
+        else:
+            print("S&P 500 data unavailable")
+    except Exception as e:
+        print(f"S&P 500 data fetch failed: {e}")
+    print("today's portfolio:")
+>>>>>>> Stashed changes
     print(chatgpt_portfolio)
 
     print("\n[ Your Instructions ]")

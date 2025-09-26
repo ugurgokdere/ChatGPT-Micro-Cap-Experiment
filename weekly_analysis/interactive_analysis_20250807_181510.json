@@ -1,0 +1,96 @@
+{
+  "analysis_date": "2025-08-07T18:15:10.175400",
+  "research_source": "Manual input",
+  "stocks_analyzed": [
+    "SHPH",
+    "OCGN",
+    "MVIS"
+  ],
+  "detailed_analysis": {
+    "SHPH": {
+      "ticker": "SHPH",
+      "current_price": 3.585,
+      "market_cap": 3835950.0,
+      "is_micro_cap": true,
+      "micro_cap_eligible": true,
+      "company_name": "Shuttle Pharmaceuticals Holdings Inc",
+      "industry": "Biotechnology",
+      "pe_ratio": null,
+      "revenue_growth": null,
+      "assessment_score": 0,
+      "recommendation": "HOLD",
+      "key_factors": [],
+      "compliance_issues": []
+    },
+    "OCGN": {
+      "ticker": "OCGN",
+      "current_price": 0.9472,
+      "market_cap": 276610816.0,
+      "is_micro_cap": true,
+      "micro_cap_eligible": false,
+      "company_name": "Ocugen Inc",
+      "industry": "Biotechnology",
+      "pe_ratio": null,
+      "revenue_growth": -35.86,
+      "assessment_score": 0,
+      "recommendation": "HOLD",
+      "key_factors": [],
+      "compliance_issues": [
+        "Penny stock"
+      ]
+    },
+    "MVIS": {
+      "ticker": "MVIS",
+      "current_price": 1.115,
+      "market_cap": 277924900.0,
+      "is_micro_cap": true,
+      "micro_cap_eligible": true,
+      "company_name": "MicroVision Inc",
+      "industry": "Electrical Equipment",
+      "pe_ratio": null,
+      "revenue_growth": -41.77,
+      "assessment_score": 0,
+      "recommendation": "HOLD",
+      "key_factors": [],
+      "compliance_issues": []
+    }
+  },
+  "ai_analysis": {
+    "research_tickers": [
+      "SHPH",
+      "OCGN",
+      "MVIS"
+    ],
+    "current_portfolio": [],
+    "cash_available": 1000.0,
+    "ai_analysis": {
+      "analysis": "1. CURRENT PORTFOLIO ASSESSMENT\n\nAs our current portfolio only consists of cash, our holdings are fully compliant with micro-cap requirements. Our three research stocks (SHPH, OCGN, MVIS) all qualify as micro-cap stocks with market caps well below $300M. \n\n2. MARKET OUTLOOK\n\nThe market for micro-cap stocks can be unpredictable, but it often offers opportunities for high returns. The biotechnology industry appears to be a promising sector with two of our research stocks (SHPH and OCGN) belonging to it. However, diversification is key in managing risk, so it may be beneficial to consider stocks from different industries as well.\n\n3. RECOMMENDED ACTIONS\n\nSHPH (Shuttle Pharmaceuticals Holdings Inc):\n- Action: BUY\n- Confidence: MEDIUM\n- Reasoning: Despite a low assessment score, the biotechnology industry has potential for high growth. However, careful monitoring is required due to its volatility.\n- Position Size: $250\n- Risk factors to monitor: Regulatory approvals, clinical trial results\n\nOCGN (Ocugen Inc):\n- Action: HOLD\n- Confidence: LOW\n- Reasoning: The company's low price and high market cap suggest potential issue. Further research is needed before making a decision.\n- Position Size: N/A\n- Risk factors to monitor: Company's financial health, product pipeline\n\nMVIS (MicroVision Inc):\n- Action: BUY\n- Confidence: MEDIUM\n- Reasoning: The electrical equipment industry can provide diversification to our biotech-focused portfolio. The company's relatively higher market cap may suggest stability.\n- Position Size: $250\n- Risk factors to monitor: Market demand for products, financial health of the company\n\n4. NEW INVESTMENT THESIS\n\nOur new investment thesis focuses on diversification within the micro-cap universe, balancing potential high-growth biotech stocks with more stable industries. We aim to maximize our returns through careful stock selection and risk management, focusing on companies with promising growth prospects and reasonable financial health. Our approach will involve regular reassessment of our portfolio and market conditions to make necessary adjustments.",
+      "recommendations": [],
+      "thesis": "",
+      "timestamp": "2025-08-07T18:15:10.175360"
+    },
+    "analysis_date": "2025-08-07T18:15:10.175387"
+  },
+  "buy_candidates": [],
+  "sell_recommendations": [],
+  "hold_positions": [
+    {
+      "ticker": "SHPH",
+      "current_price": 3.585,
+      "reason": "Monitor only - Low assessment score",
+      "assessment_score": 0
+    },
+    {
+      "ticker": "OCGN",
+      "current_price": 0.9472,
+      "reason": "Monitor only - Penny stock",
+      "assessment_score": 0
+    },
+    {
+      "ticker": "MVIS",
+      "current_price": 1.115,
+      "reason": "Monitor only - Low assessment score",
+      "assessment_score": 0
+    }
+  ]
+}

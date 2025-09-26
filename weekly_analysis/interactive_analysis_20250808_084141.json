@@ -1,0 +1,134 @@
+{
+  "analysis_date": "2025-08-08T08:41:41.000434",
+  "research_source": "Manual input",
+  "stocks_analyzed": [
+    "SHPH",
+    "OCGN",
+    "MVIS",
+    "LLAP"
+  ],
+  "detailed_analysis": {
+    "SHPH": {
+      "ticker": "SHPH",
+      "current_price": 3.52,
+      "market_cap": 3766400.0000000005,
+      "is_micro_cap": true,
+      "micro_cap_eligible": true,
+      "company_name": "Shuttle Pharmaceuticals Holdings Inc",
+      "industry": "Biotechnology",
+      "pe_ratio": null,
+      "revenue_growth": null,
+      "assessment_score": 0,
+      "recommendation": "HOLD",
+      "key_factors": [],
+      "compliance_issues": []
+    },
+    "OCGN": {
+      "ticker": "OCGN",
+      "current_price": 1,
+      "market_cap": 292030000.0,
+      "is_micro_cap": true,
+      "micro_cap_eligible": false,
+      "company_name": "Ocugen Inc",
+      "industry": "Biotechnology",
+      "pe_ratio": null,
+      "revenue_growth": -35.86,
+      "assessment_score": 0,
+      "recommendation": "HOLD",
+      "key_factors": [],
+      "compliance_issues": []
+    },
+    "MVIS": {
+      "ticker": "MVIS",
+      "current_price": 1.12,
+      "market_cap": 279171200.0,
+      "is_micro_cap": true,
+      "micro_cap_eligible": true,
+      "company_name": "MicroVision Inc",
+      "industry": "Electrical Equipment",
+      "pe_ratio": null,
+      "revenue_growth": -41.77,
+      "assessment_score": 0,
+      "recommendation": "HOLD",
+      "key_factors": [],
+      "compliance_issues": []
+    },
+    "LLAP": {
+      "ticker": "LLAP",
+      "current_price": 0,
+      "market_cap": 0.0,
+      "is_micro_cap": false,
+      "micro_cap_eligible": false,
+      "company_name": "Terran Orbital Corp",
+      "industry": "Aerospace & Defense",
+      "pe_ratio": null,
+      "revenue_growth": 10.76,
+      "assessment_score": 0,
+      "recommendation": "HOLD",
+      "key_factors": [],
+      "compliance_issues": [
+        "Not micro-cap",
+        "Penny stock"
+      ]
+    }
+  },
+  "ai_analysis": {
+    "research_tickers": [
+      "SHPH",
+      "OCGN",
+      "MVIS",
+      "LLAP"
+    ],
+    "current_portfolio": [
+      "MVIS",
+      "OCGN"
+    ],
+    "cash_available": 9.15,
+    "ai_analysis": {
+      "analysis": "1. CURRENT PORTFOLIO ASSESSMENT:\n- MVIS (MicroVision Inc): HOLD with MEDIUM confidence. The company operates in the Electrical Equipment industry and is a micro-cap stock with a market cap of $279,171,200. It has potential growth but given the industry, it might face fierce competition and economic uncertainty. Continue monitoring the company's performance.\n- OCGN (Ocugen Inc): SELL with HIGH confidence. Although it is a micro-cap stock with a market cap of $292,030,000, the company's financial strength is not promising and the growth potential is low. Plus, the portfolio already has exposure to the Biotechnology industry through SHPH.\n\n2. MARKET OUTLOOK:\nThe micro-cap stock market is volatile with plenty of risks and potential rewards. Given the economic uncertainty, the focus should be on companies with robust financial health and strong growth potential.\n\n3. RECOMMENDED ACTIONS:\n- SELL all holdings in OCGN and reallocate to other potential micro-cap stocks.\n- HOLD MVIS and continue monitoring the company's performance.\n- CONSIDER BUYING SHPH (Shuttle Pharmaceuticals Holdings Inc): Despite the low assessment score, it's a micro-cap stock in the Biotechnology industry with a relatively small market cap, which indicates potential for high growth. Although the price is low, the financial strength of the company needs to be assessed further. The action is of MEDIUM confidence. The suggested dollar amount for buying is approx $200, keeping the risk and the available cash in mind.\n\n4. NEW INVESTMENT THESIS:\nThe portfolio will focus on micro-cap stocks that have robust financial health, potential for high growth and provide industry diversification. The aim is to achieve high returns by taking calculated risks. The current portfolio will be monitored closely and rebalanced based on the performance of the stocks and the available opportunities in the micro-cap stock market.",
+      "recommendations": [
+        {
+          "action": "SELL",
+          "text": "- sell all holdings in ocgn and reallocate to other potential micro-cap stocks.",
+          "confidence": "medium"
+        },
+        {
+          "action": "BUY",
+          "text": "- consider buying shph (shuttle pharmaceuticals holdings inc): despite the low assessment score, it's a micro-cap stock in the biotechnology industry with a relatively small market cap, which indicates potential for high growth. although the price is low, the financial strength of the company needs to be assessed further. the action is of medium confidence. the suggested dollar amount for buying is approx $200, keeping the risk and the available cash in mind.",
+          "confidence": "medium"
+        }
+      ],
+      "thesis": "The portfolio will focus on micro-cap stocks that have robust financial health, potential for high growth and provide industry diversification. The aim is to achieve high returns by taking calculated risks. The current portfolio will be monitored closely and rebalanced based on the performance of the stocks and the available opportunities in the micro-cap stock market.",
+      "timestamp": "2025-08-08T08:41:41.000400"
+    },
+    "analysis_date": "2025-08-08T08:41:41.000415"
+  },
+  "buy_candidates": [],
+  "sell_recommendations": [],
+  "hold_positions": [
+    {
+      "ticker": "SHPH",
+      "current_price": 3.52,
+      "reason": "Monitor only - Low assessment score",
+      "assessment_score": 0
+    },
+    {
+      "ticker": "OCGN",
+      "current_price": 1,
+      "reason": "Monitor only - Low assessment score",
+      "assessment_score": 0
+    },
+    {
+      "ticker": "MVIS",
+      "current_price": 1.12,
+      "reason": "Monitor only - Low assessment score",
+      "assessment_score": 0
+    },
+    {
+      "ticker": "LLAP",
+      "current_price": 0,
+      "reason": "Monitor only - Not micro-cap, Penny stock",
+      "assessment_score": 0
+    }
+  ]
+}

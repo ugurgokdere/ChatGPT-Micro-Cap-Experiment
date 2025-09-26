@@ -1,0 +1,96 @@
+{
+  "analysis_date": "2025-08-08T08:40:43.876555",
+  "research_source": "Manual input",
+  "stocks_analyzed": [
+    "SHPH",
+    "LLAP"
+  ],
+  "detailed_analysis": {
+    "SHPH": {
+      "ticker": "SHPH",
+      "current_price": 3.52,
+      "market_cap": 3766400.0000000005,
+      "is_micro_cap": true,
+      "micro_cap_eligible": true,
+      "company_name": "Shuttle Pharmaceuticals Holdings Inc",
+      "industry": "Biotechnology",
+      "pe_ratio": null,
+      "revenue_growth": null,
+      "assessment_score": 0,
+      "recommendation": "HOLD",
+      "key_factors": [],
+      "compliance_issues": []
+    },
+    "LLAP": {
+      "ticker": "LLAP",
+      "current_price": 0,
+      "market_cap": 0.0,
+      "is_micro_cap": false,
+      "micro_cap_eligible": false,
+      "company_name": "Terran Orbital Corp",
+      "industry": "Aerospace & Defense",
+      "pe_ratio": null,
+      "revenue_growth": 10.76,
+      "assessment_score": 0,
+      "recommendation": "HOLD",
+      "key_factors": [],
+      "compliance_issues": [
+        "Not micro-cap",
+        "Penny stock"
+      ]
+    }
+  },
+  "ai_analysis": {
+    "research_tickers": [
+      "SHPH",
+      "LLAP"
+    ],
+    "current_portfolio": [
+      "MVIS",
+      "OCGN"
+    ],
+    "cash_available": 9.15,
+    "ai_analysis": {
+      "analysis": "1. CURRENT PORTFOLIO ASSESSMENT:\n\nMVIS (MicroVision, Inc.):\n- Micro-cap compliance: Yes, the current market cap is under $300M.\n- Financial strength and growth potential: MVIS shows potential for growth with solid financials.\n- Current portfolio diversification: MVIS represents the technology sector in our portfolio.\n- Risk/reward ratio: Moderate risk due to the volatile nature of the tech sector.\n\nOCGN (Ocugen, Inc.):\n- Micro-cap compliance: Yes, the current market cap is under $300M.\n- Financial strength and growth potential: Although OCGN is in the biotech sector which is inherently risky, it has shown strong growth potential.\n- Current portfolio diversification: OCGN provides exposure to the biotech sector.\n- Risk/reward ratio: High risk due to the unpredictable nature of the biotech sector.\n\n2. MARKET OUTLOOK:\nThe market is expected to be volatile in the coming months. We also anticipate a rising interest in the biotech and tech sectors due to the ongoing pandemic and digital transformation trends.\n\n3. RECOMMENDED ACTIONS:\n- MVIS: HOLD with HIGH confidence. The company is financially strong and provides good exposure to the tech sector. Risk factors to monitor include downturns in the tech sector and any negative company-specific news.\n- OCGN: HOLD with MEDIUM confidence. Despite its potential, the biotech sector is inherently risky. Monitor clinical trial results and regulatory updates.\n- SHPH: BUY with MEDIUM confidence. The company is in the biotech sector and could benefit from a potential upswing. Invest $500. Monitor factors include clinical trial updates and overall market performance.\n- LLAP: Do not buy. The company does not meet the criteria of being a micro-cap stock.\n\n4. NEW INVESTMENT THESIS:\nGiven the current market volatility, our strategy is to maintain a balanced portfolio with exposure to both the technology and biotech sectors. We will continue to monitor our current holdings and invest in new opportunities that align with our micro-cap focus and offer a favorable risk/reward ratio. Our primary aim is to maximize alpha generation within the micro-cap universe.",
+      "recommendations": [
+        {
+          "action": "BUY",
+          "text": "- shph: buy with medium confidence. the company is in the biotech sector and could benefit from a potential upswing. invest $500. monitor factors include clinical trial updates and overall market performance.",
+          "confidence": "medium"
+        }
+      ],
+      "thesis": "",
+      "timestamp": "2025-08-08T08:40:43.876534"
+    },
+    "analysis_date": "2025-08-08T08:40:43.876546"
+  },
+  "buy_candidates": [],
+  "sell_recommendations": [
+    {
+      "ticker": "MVIS",
+      "reason": "Not in current week's research focus",
+      "current_value": 488.35355730784005,
+      "confidence": "MEDIUM"
+    },
+    {
+      "ticker": "OCGN",
+      "reason": "Not in current week's research focus",
+      "current_value": 502.4971,
+      "confidence": "MEDIUM"
+    }
+  ],
+  "hold_positions": [
+    {
+      "ticker": "SHPH",
+      "current_price": 3.52,
+      "reason": "Monitor only - Low assessment score",
+      "assessment_score": 0
+    },
+    {
+      "ticker": "LLAP",
+      "current_price": 0,
+      "reason": "Monitor only - Not micro-cap, Penny stock",
+      "assessment_score": 0
+    }
+  ]
+}

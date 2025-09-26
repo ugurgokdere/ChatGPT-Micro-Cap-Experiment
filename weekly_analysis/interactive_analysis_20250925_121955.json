@@ -1,0 +1,204 @@
+{
+  "analysis_date": "2025-09-25T12:19:55.557294",
+  "research_source": "Manual input",
+  "stocks_analyzed": [
+    "MIST",
+    "ALDX",
+    "TNXP",
+    "PDSB",
+    "DUOT",
+    "REKR",
+    "VELO"
+  ],
+  "detailed_analysis": {
+    "MIST": {
+      "ticker": "MIST",
+      "current_price": 1.94,
+      "market_cap": 164880600.0,
+      "is_micro_cap": true,
+      "micro_cap_eligible": false,
+      "company_name": "Milestone Pharmaceuticals Inc",
+      "industry": "Pharmaceuticals",
+      "pe_ratio": null,
+      "revenue_growth": null,
+      "assessment_score": 0,
+      "recommendation": "HOLD",
+      "key_factors": [],
+      "compliance_issues": [
+        "Not US-listed"
+      ]
+    },
+    "ALDX": {
+      "ticker": "ALDX",
+      "current_price": 5.01,
+      "market_cap": 300099000.0,
+      "is_micro_cap": false,
+      "micro_cap_eligible": false,
+      "company_name": "Aldeyra Therapeutics Inc",
+      "industry": "Biotechnology",
+      "pe_ratio": null,
+      "revenue_growth": null,
+      "assessment_score": 0,
+      "recommendation": "HOLD",
+      "key_factors": [],
+      "compliance_issues": []
+    },
+    "TNXP": {
+      "ticker": "TNXP",
+      "current_price": 24.7,
+      "market_cap": 216618999.99999997,
+      "is_micro_cap": true,
+      "micro_cap_eligible": true,
+      "company_name": "Tonix Pharmaceuticals Holding Corp",
+      "industry": "Biotechnology",
+      "pe_ratio": null,
+      "revenue_growth": -21.09,
+      "assessment_score": 0,
+      "recommendation": "HOLD",
+      "key_factors": [],
+      "compliance_issues": []
+    },
+    "PDSB": {
+      "ticker": "PDSB",
+      "current_price": 1.06,
+      "market_cap": 49427800.00000001,
+      "is_micro_cap": true,
+      "micro_cap_eligible": true,
+      "company_name": "PDS Biotechnology Corp",
+      "industry": "Biotechnology",
+      "pe_ratio": null,
+      "revenue_growth": null,
+      "assessment_score": 0,
+      "recommendation": "HOLD",
+      "key_factors": [],
+      "compliance_issues": []
+    },
+    "DUOT": {
+      "ticker": "DUOT",
+      "current_price": 7.52,
+      "market_cap": 152280000.0,
+      "is_micro_cap": true,
+      "micro_cap_eligible": true,
+      "company_name": "Duos Technologies Group Inc",
+      "industry": "Technology",
+      "pe_ratio": null,
+      "revenue_growth": 172.93,
+      "assessment_score": 0,
+      "recommendation": "HOLD",
+      "key_factors": [],
+      "compliance_issues": []
+    },
+    "REKR": {
+      "ticker": "REKR",
+      "current_price": 1.79,
+      "market_cap": 226130700.0,
+      "is_micro_cap": true,
+      "micro_cap_eligible": true,
+      "company_name": "Rekor Systems Inc",
+      "industry": "Technology",
+      "pe_ratio": null,
+      "revenue_growth": 7.05,
+      "assessment_score": 0,
+      "recommendation": "HOLD",
+      "key_factors": [],
+      "compliance_issues": []
+    },
+    "VELO": {
+      "ticker": "VELO",
+      "current_price": 3.17,
+      "market_cap": 63082999.99999999,
+      "is_micro_cap": true,
+      "micro_cap_eligible": true,
+      "company_name": "Velo3D Inc",
+      "industry": "Machinery",
+      "pe_ratio": null,
+      "revenue_growth": -33.03,
+      "assessment_score": 0,
+      "recommendation": "HOLD",
+      "key_factors": [],
+      "compliance_issues": []
+    }
+  },
+  "ai_analysis": {
+    "research_tickers": [
+      "MIST",
+      "ALDX",
+      "TNXP",
+      "PDSB",
+      "DUOT",
+      "REKR",
+      "VELO"
+    ],
+    "current_portfolio": [
+      "MVIS",
+      "OCGN"
+    ],
+    "cash_available": 9.15,
+    "ai_analysis": {
+      "analysis": "1. CURRENT PORTFOLIO ASSESSMENT: \n\nCurrent holdings MVIS and OCGN are not within the micro-cap range. They need to be replaced with stocks that fit within the micro-cap universe. \n\n2. MARKET OUTLOOK:\n\nThe market has shown a positive trend towards tech and pharmaceutical sectors. However, it's still important to diversify across industries to minimize risk. Considering the short-term investment horizon, stocks with upcoming catalysts and strong growth potential should be prioritized. \n\n3. RECOMMENDED ACTIONS:\n\na) MIST - HOLD\nConfidence: MEDIUM\nReasoning: Despite its low price, MIST has a good market cap within the micro-cap range. This stock can serve as a placeholder in the portfolio until a more promising opportunity arises. \nRisk factors to monitor: Performance of the pharmaceutical sector, upcoming development updates from the company.\n\nb) ALDX - SELL\nConfidence: HIGH\nReasoning: ALDX is not considered a micro-cap stock. It needs to be replaced with a stock that fits the micro-cap criteria. \nRisk factors to monitor: N/A\n\nc) TNXP - BUY \nConfidence: HIGH\nReasoning: TNXP is a micro-cap stock within the biotech industry which is currently trending. The company's current market cap and price indicate strong growth potential. \nPosition size: $200\nRisk factors to monitor: Upcoming clinical trial results, potential FDA approvals, and sector performance.\n\nd) PDSB - BUY\nConfidence: HIGH\nReasoning: PDSB has a promising market cap within the micro-cap range. Its low price indicates potential for substantial returns. \nPosition size: $200\nRisk factors to monitor: Performance of biotech sector and company's upcoming development updates.\n\ne) DUOT - BUY\nConfidence: MEDIUM\nReasoning: DUOT provides necessary diversification in the technology sector. Its market cap and price suggest moderate growth potential.\nPosition size: $100\nRisk factors to monitor: Tech sector performance and company's growth trajectory.\n\nf) REKR - HOLD\nConfidence: MEDIUM\nReasoning: REKR has a good market cap within the micro-cap range. It should be held for now until a better opportunity arises.\nRisk factors to monitor: Tech sector performance and company's growth trajectory.\n\ng) VELO - BUY\nConfidence: MEDIUM\nReasoning: VELO's low price and market cap within the micro-cap range present potential for returns. It also provides necessary diversification in the machinery industry. \nPosition size: $100\nRisk factors to monitor: Machinery sector performance and company's growth trajectory.\n\n4. NEW INVESTMENT THESIS:\n\nThe portfolio will focus on micro-cap stocks within trending sectors, specifically biotech, tech, and machinery. The strategy will aim to maximize returns by prioritizing stocks with strong growth potential and upcoming catalysts. Regular monitoring and rebalancing will be done to ensure optimal diversification and risk management.",
+      "recommendations": [],
+      "thesis": "",
+      "timestamp": "2025-09-25T12:19:55.557251"
+    },
+    "analysis_date": "2025-09-25T12:19:55.557281"
+  },
+  "buy_candidates": [],
+  "sell_recommendations": [
+    {
+      "ticker": "MVIS",
+      "reason": "Not in current week's research focus",
+      "current_value": 488.35355730784005,
+      "confidence": "MEDIUM"
+    },
+    {
+      "ticker": "OCGN",
+      "reason": "Not in current week's research focus",
+      "current_value": 502.4971,
+      "confidence": "MEDIUM"
+    }
+  ],
+  "hold_positions": [
+    {
+      "ticker": "MIST",
+      "current_price": 1.94,
+      "reason": "Monitor only - Not US-listed",
+      "assessment_score": 0
+    },
+    {
+      "ticker": "ALDX",
+      "current_price": 5.01,
+      "reason": "Monitor only - Low assessment score",
+      "assessment_score": 0
+    },
+    {
+      "ticker": "TNXP",
+      "current_price": 24.7,
+      "reason": "Monitor only - Low assessment score",
+      "assessment_score": 0
+    },
+    {
+      "ticker": "PDSB",
+      "current_price": 1.06,
+      "reason": "Monitor only - Low assessment score",
+      "assessment_score": 0
+    },
+    {
+      "ticker": "DUOT",
+      "current_price": 7.52,
+      "reason": "Monitor only - Low assessment score",
+      "assessment_score": 0
+    },
+    {
+      "ticker": "REKR",
+      "current_price": 1.79,
+      "reason": "Monitor only - Low assessment score",
+      "assessment_score": 0
+    },
+    {
+      "ticker": "VELO",
+      "current_price": 3.17,
+      "reason": "Monitor only - Low assessment score",
+      "assessment_score": 0
+    }
+  ]
+}

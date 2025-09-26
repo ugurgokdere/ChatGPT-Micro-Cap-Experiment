@@ -1,0 +1,248 @@
+{
+  "analysis_date": "2025-09-25T11:49:58.639724",
+  "research_source": "Manual input",
+  "stocks_analyzed": [
+    "ADCT",
+    "HRZN",
+    "NVEC",
+    "SPIR",
+    "BRT",
+    "MTLS",
+    "NL"
+  ],
+  "detailed_analysis": {
+    "ADCT": {
+      "ticker": "ADCT",
+      "current_price": 3.56,
+      "market_cap": 400500000.0,
+      "is_micro_cap": false,
+      "micro_cap_eligible": false,
+      "company_name": "ADC Therapeutics SA",
+      "industry": "Biotechnology",
+      "pe_ratio": null,
+      "revenue_growth": 15.73,
+      "assessment_score": 0,
+      "recommendation": "HOLD",
+      "key_factors": [],
+      "compliance_issues": [
+        "Not micro-cap",
+        "Not US-listed"
+      ]
+    },
+    "HRZN": {
+      "ticker": "HRZN",
+      "current_price": 6.22,
+      "market_cap": 264660999.99999994,
+      "is_micro_cap": true,
+      "micro_cap_eligible": true,
+      "company_name": "Horizon Technology Finance Corp",
+      "industry": "Financial Services",
+      "pe_ratio": null,
+      "revenue_growth": -78.34,
+      "assessment_score": 0,
+      "recommendation": "HOLD",
+      "key_factors": [],
+      "compliance_issues": []
+    },
+    "NVEC": {
+      "ticker": "NVEC",
+      "current_price": 66.58,
+      "market_cap": 322247199.99999994,
+      "is_micro_cap": false,
+      "micro_cap_eligible": false,
+      "company_name": "NVE Corp",
+      "industry": "Semiconductors",
+      "pe_ratio": 22.3153,
+      "revenue_growth": -9.21,
+      "assessment_score": 0,
+      "recommendation": "HOLD",
+      "key_factors": [],
+      "compliance_issues": [
+        "Not micro-cap"
+      ]
+    },
+    "SPIR": {
+      "ticker": "SPIR",
+      "current_price": 11.68,
+      "market_cap": 380534399.99999994,
+      "is_micro_cap": false,
+      "micro_cap_eligible": false,
+      "company_name": "Spire Global Inc",
+      "industry": "Professional Services",
+      "pe_ratio": null,
+      "revenue_growth": -7.2,
+      "assessment_score": 0,
+      "recommendation": "HOLD",
+      "key_factors": [],
+      "compliance_issues": [
+        "Not micro-cap"
+      ]
+    },
+    "BRT": {
+      "ticker": "BRT",
+      "current_price": 15.82,
+      "market_cap": 298998000.0,
+      "is_micro_cap": true,
+      "micro_cap_eligible": true,
+      "company_name": "BRT Apartments Corp",
+      "industry": "Real Estate",
+      "pe_ratio": null,
+      "revenue_growth": 2.16,
+      "assessment_score": 0,
+      "recommendation": "HOLD",
+      "key_factors": [],
+      "compliance_issues": []
+    },
+    "MTLS": {
+      "ticker": "MTLS",
+      "current_price": 5.83,
+      "market_cap": 344378100.0,
+      "is_micro_cap": false,
+      "micro_cap_eligible": false,
+      "company_name": "Materialise NV",
+      "industry": "Technology",
+      "pe_ratio": 50.9506,
+      "revenue_growth": 2.98,
+      "assessment_score": 0,
+      "recommendation": "HOLD",
+      "key_factors": [],
+      "compliance_issues": [
+        "Not micro-cap",
+        "Not US-listed"
+      ]
+    },
+    "NL": {
+      "ticker": "NL",
+      "current_price": 6.09,
+      "market_cap": 297557400.0,
+      "is_micro_cap": true,
+      "micro_cap_eligible": true,
+      "company_name": "NL Industries Inc",
+      "industry": "Commercial Services & Supplies",
+      "pe_ratio": 5.4813,
+      "revenue_growth": -2.99,
+      "assessment_score": 0,
+      "recommendation": "HOLD",
+      "key_factors": [],
+      "compliance_issues": []
+    }
+  },
+  "ai_analysis": {
+    "research_tickers": [
+      "ADCT",
+      "HRZN",
+      "NVEC",
+      "SPIR",
+      "BRT",
+      "MTLS",
+      "NL"
+    ],
+    "current_portfolio": [
+      "MVIS",
+      "OCGN"
+    ],
+    "cash_available": 9.15,
+    "ai_analysis": {
+      "analysis": "1. CURRENT PORTFOLIO ASSESSMENT\n\nMVIS (MicroVision, Inc) and OCGN (Ocugen, Inc) are the current holdings. MVIS specializes in laser beam scanning technology, and OCGN is a biopharmaceutical company. Both are in different sectors, providing some level of diversification. However, their market cap needs to be checked for compliance with the micro-cap criteria (market cap < $300M).\n\n2. MARKET OUTLOOK\n\nGiven the current economic conditions, micro-cap stocks are expected to perform well due to the potential for higher returns. However, they are also associated with higher risk. The financial services, real estate, and commercial services sectors have shown positive growth trends. Technology and biotech sectors are volatile but can provide high returns if the right companies are chosen.\n\n3. RECOMMENDED ACTIONS\n\n- ADCT: SELL, confidence: HIGH, reasoning: Market cap is above the micro-cap limit. Position size: N/A, Risk factors: N/A\n- HRZN: BUY, confidence: MEDIUM, reasoning: Fits the micro-cap criteria and operates in a stable industry. Position size: $200, Risk factors: Monitor interest rates and economic conditions.\n- NVEC: SELL, confidence: HIGH, reasoning: Market cap is above the micro-cap limit. Position size: N/A, Risk factors: N/A\n- SPIR: SELL, confidence: HIGH, reasoning: Market cap is above the micro-cap limit. Position size: N/A, Risk factors: N/A\n- BRT: BUY, confidence: MEDIUM, reasoning: Fits the micro-cap criteria and operates in a stable industry. Position size: $200, Risk factors: Monitor real estate market trends and economic conditions.\n- MTLS: SELL, confidence: HIGH, reasoning: Market cap is above the micro-cap limit. Position size: N/A, Risk factors: N/A\n- NL: BUY, confidence: MEDIUM, reasoning: Fits the micro-cap criteria and operates in a stable industry. Position size: $200, Risk factors: Monitor commercial services market trends and economic conditions.\n\n4. NEW INVESTMENT THESIS\n\nGiven the market outlook, the focus will be on diversification across different sectors to minimize risk. This includes financial services, real estate, and commercial services sectors, which are currently showing positive growth trends. It's important to monitor market conditions and adjust the portfolio accordingly. In addition, the portfolio will comply with the micro-cap criteria, and will aim to maximize return for the remaining time in the experiment.",
+      "recommendations": [
+        {
+          "action": "SELL",
+          "text": "- adct: sell, confidence: high, reasoning: market cap is above the micro-cap limit. position size: n/a, risk factors: n/a",
+          "confidence": "medium"
+        },
+        {
+          "action": "BUY",
+          "text": "- hrzn: buy, confidence: medium, reasoning: fits the micro-cap criteria and operates in a stable industry. position size: $200, risk factors: monitor interest rates and economic conditions.",
+          "confidence": "medium"
+        },
+        {
+          "action": "SELL",
+          "text": "- nvec: sell, confidence: high, reasoning: market cap is above the micro-cap limit. position size: n/a, risk factors: n/a",
+          "confidence": "medium"
+        },
+        {
+          "action": "SELL",
+          "text": "- spir: sell, confidence: high, reasoning: market cap is above the micro-cap limit. position size: n/a, risk factors: n/a",
+          "confidence": "medium"
+        },
+        {
+          "action": "BUY",
+          "text": "- brt: buy, confidence: medium, reasoning: fits the micro-cap criteria and operates in a stable industry. position size: $200, risk factors: monitor real estate market trends and economic conditions.",
+          "confidence": "medium"
+        },
+        {
+          "action": "SELL",
+          "text": "- mtls: sell, confidence: high, reasoning: market cap is above the micro-cap limit. position size: n/a, risk factors: n/a",
+          "confidence": "medium"
+        },
+        {
+          "action": "BUY",
+          "text": "- nl: buy, confidence: medium, reasoning: fits the micro-cap criteria and operates in a stable industry. position size: $200, risk factors: monitor commercial services market trends and economic conditions.",
+          "confidence": "medium"
+        }
+      ],
+      "thesis": "Given the market outlook, the focus will be on diversification across different sectors to minimize risk. This includes financial services, real estate, and commercial services sectors, which are currently showing positive growth trends. It's important to monitor market conditions and adjust the portfolio accordingly. In addition, the portfolio will comply with the micro-cap criteria, and will aim to maximize return for the remaining time in the experiment.",
+      "timestamp": "2025-09-25T11:49:58.639628"
+    },
+    "analysis_date": "2025-09-25T11:49:58.639689"
+  },
+  "buy_candidates": [],
+  "sell_recommendations": [
+    {
+      "ticker": "MVIS",
+      "reason": "Not in current week's research focus",
+      "current_value": 488.35355730784005,
+      "confidence": "MEDIUM"
+    },
+    {
+      "ticker": "OCGN",
+      "reason": "Not in current week's research focus",
+      "current_value": 502.4971,
+      "confidence": "MEDIUM"
+    }
+  ],
+  "hold_positions": [
+    {
+      "ticker": "ADCT",
+      "current_price": 3.56,
+      "reason": "Monitor only - Not micro-cap, Not US-listed",
+      "assessment_score": 0
+    },
+    {
+      "ticker": "HRZN",
+      "current_price": 6.22,
+      "reason": "Monitor only - Low assessment score",
+      "assessment_score": 0
+    },
+    {
+      "ticker": "NVEC",
+      "current_price": 66.58,
+      "reason": "Monitor only - Not micro-cap",
+      "assessment_score": 0
+    },
+    {
+      "ticker": "SPIR",
+      "current_price": 11.68,
+      "reason": "Monitor only - Not micro-cap",
+      "assessment_score": 0
+    },
+    {
+      "ticker": "BRT",
+      "current_price": 15.82,
+      "reason": "Monitor only - Low assessment score",
+      "assessment_score": 0
+    },
+    {
+      "ticker": "MTLS",
+      "current_price": 5.83,
+      "reason": "Monitor only - Not micro-cap, Not US-listed",
+      "assessment_score": 0
+    },
+    {
+      "ticker": "NL",
+      "current_price": 6.09,
+      "reason": "Monitor only - Low assessment score",
+      "assessment_score": 0
+    }
+  ]
+}

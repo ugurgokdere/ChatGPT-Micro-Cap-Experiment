@@ -1,0 +1,302 @@
+{
+  "name": "Trading Analysis Automation",
+  "nodes": [
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "field": "hours",
+              "hoursInterval": 24
+            }
+          ]
+        }
+      },
+      "id": "schedule-trigger",
+      "name": "Daily Schedule",
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 3,
+      "position": [250, 300],
+      "notes": "Runs daily at market open (9:30 AM EST)"
+    },
+    {
+      "parameters": {
+        "jsCode": "const { exec } = require('child_process');\nconst util = require('util');\nconst execPromise = util.promisify(exec);\n\nconst command = 'cd /Users/ugurgokdere/Developer/ChatGPT-Micro-Cap-Experiment && python n8n_wrapper.py analyze --watchlist-file watchlist.txt --output json';\n\ntry {\n  const { stdout, stderr } = await execPromise(command);\n  \n  if (stderr) {\n    console.error('Command stderr:', stderr);\n  }\n  \n  return [{\n    json: {\n      stdout: stdout,\n      stderr: stderr,\n      command: command,\n      success: true\n    }\n  }];\n} catch (error) {\n  return [{\n    json: {\n      stdout: '',\n      stderr: error.message,\n      command: command,\n      success: false,\n      error: error.message\n    }\n  }];\n}"
+      },
+      "id": "execute-analysis",
+      "name": "Run Analysis",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [450, 300],
+      "notes": "Executes the trading analysis script using Code node"
+    },
+    {
+      "parameters": {
+        "jsCode": "// Parse the JSON output from the command execution\nconst stdout = $input.first().json.stdout;\nconst success = $input.first().json.success;\n\nif (!success) {\n  return [{\n    json: {\n      status: 'error',\n      error: $input.first().json.error || 'Command execution failed'\n    }\n  }];\n}\n\ntry {\n  const parsedData = JSON.parse(stdout);\n  return [{\n    json: parsedData\n  }];\n} catch (error) {\n  return [{\n    json: {\n      status: 'error',\n      error: 'Failed to parse JSON output: ' + error.message,\n      rawOutput: stdout\n    }\n  }];\n}"
+      },
+      "id": "parse-results",
+      "name": "Parse JSON Results",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [650, 300],
+      "notes": "Parse the JSON output from analysis"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "boolean": [
+            {
+              "value1": "={{ $json.status }}",
+              "value2": "success"
+            }
+          ]
+        }
+      },
+      "id": "check-success",
+      "name": "Check Success",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 1,
+      "position": [850, 300]
+    },
+    {
+      "parameters": {
+        "functionCode": "// Extract recommendations and format for decision\nconst data = $input.first().json;\nconst recommendations = data.recommendations;\nconst summary = data.summary;\n\n// Check if action is needed\nconst needsAction = summary.buy_count > 0 || summary.sell_count > 0;\n\n// Format buy recommendations\nlet buyList = '';\nif (recommendations.buy_candidates && recommendations.buy_candidates.length > 0) {\n  buyList = recommendations.buy_candidates.map(c => \n    `${c.ticker} @ $${c.current_price.toFixed(2)} (${c.confidence})`\n  ).join('\\n');\n}\n\n// Format sell recommendations  \nlet sellList = '';\nif (recommendations.sell_recommendations && recommendations.sell_recommendations.length > 0) {\n  sellList = recommendations.sell_recommendations.map(s => \n    `${s.ticker}: ${s.reason}`\n  ).join('\\n');\n}\n\nreturn {\n  needsAction: needsAction,\n  buyCount: summary.buy_count,\n  sellCount: summary.sell_count,\n  holdCount: summary.hold_count,\n  buyList: buyList,\n  sellList: sellList,\n  emailContent: data.email_content,\n  timestamp: data.timestamp\n};"
+      },
+      "id": "format-email",
+      "name": "Format Email Content",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [1050, 200],
+      "notes": "Format the analysis results for email"
+    },
+    {
+      "parameters": {
+        "fromEmail": "trading-bot@yourdomain.com",
+        "toEmail": "your-email@gmail.com",
+        "subject": "={{ $json.emailContent.subject }}",
+        "emailType": "html",
+        "htmlBody": "={{ $json.emailContent.body_html }}",
+        "options": {
+          "attachments": [],
+          "replyTo": "",
+          "priority": "={{ $json.needsAction ? 'high' : 'normal' }}"
+        }
+      },
+      "id": "send-email",
+      "name": "Send Gmail Notification",
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.1,
+      "position": [1250, 200],
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "1",
+          "name": "Gmail OAuth2"
+        }
+      },
+      "notes": "Sends email notification with trading recommendations"
+    },
+    {
+      "parameters": {
+        "values": {
+          "string": [
+            {
+              "name": "error_message",
+              "value": "={{ $json.error || 'Analysis failed' }}"
+            }
+          ]
+        }
+      },
+      "id": "handle-error",
+      "name": "Handle Error",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 1,
+      "position": [1050, 400]
+    },
+    {
+      "parameters": {
+        "fromEmail": "trading-bot@yourdomain.com",
+        "toEmail": "your-email@gmail.com",
+        "subject": "⚠️ Trading Analysis Error",
+        "emailType": "text",
+        "textBody": "The trading analysis failed with the following error:\\n\\n{{ $json.error_message }}\\n\\nPlease check the system logs.",
+        "options": {
+          "priority": "high"
+        }
+      },
+      "id": "send-error-email",
+      "name": "Send Error Notification",
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.1,
+      "position": [1250, 400],
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "1",
+          "name": "Gmail OAuth2"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "boolean": [
+            {
+              "value1": "={{ $json.needsAction }}",
+              "value2": true
+            }
+          ]
+        }
+      },
+      "id": "check-action-needed",
+      "name": "Action Needed?",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 1,
+      "position": [1450, 200]
+    },
+    {
+      "parameters": {
+        "jsCode": "const { exec } = require('child_process');\nconst util = require('util');\nconst execPromise = util.promisify(exec);\n\nconst command = 'cd /Users/ugurgokdere/Developer/ChatGPT-Micro-Cap-Experiment && python n8n_wrapper.py status';\n\ntry {\n  const { stdout, stderr } = await execPromise(command);\n  \n  let portfolioStatus = {};\n  try {\n    portfolioStatus = JSON.parse(stdout);\n  } catch (e) {\n    portfolioStatus = { raw: stdout };\n  }\n  \n  return [{\n    json: {\n      portfolioStatus: portfolioStatus,\n      command: command\n    }\n  }];\n} catch (error) {\n  return [{\n    json: {\n      error: error.message,\n      command: command\n    }\n  }];\n}"
+      },
+      "id": "get-portfolio-status",
+      "name": "Get Portfolio Status",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [1650, 150],
+      "notes": "Gets current portfolio status after action alert"
+    },
+    {
+      "parameters": {
+        "functionCode": "// Log the trading decision for audit\nconst fs = require('fs');\nconst path = require('path');\n\nconst logEntry = {\n  timestamp: new Date().toISOString(),\n  buyCount: $json.buyCount,\n  sellCount: $json.sellCount,\n  holdCount: $json.holdCount,\n  actionTaken: 'notification_sent'\n};\n\n// Would log to file here in production\nconsole.log('Trade decision logged:', logEntry);\n\nreturn logEntry;"
+      },
+      "id": "log-decision",
+      "name": "Log Decision",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [1650, 300],
+      "notes": "Logs the trading decision for audit trail"
+    }
+  ],
+  "connections": {
+    "schedule-trigger": {
+      "main": [
+        [
+          {
+            "node": "execute-analysis",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "execute-analysis": {
+      "main": [
+        [
+          {
+            "node": "parse-results",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "parse-results": {
+      "main": [
+        [
+          {
+            "node": "check-success",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "check-success": {
+      "main": [
+        [
+          {
+            "node": "format-email",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "handle-error",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "format-email": {
+      "main": [
+        [
+          {
+            "node": "send-email",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "send-email": {
+      "main": [
+        [
+          {
+            "node": "check-action-needed",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "handle-error": {
+      "main": [
+        [
+          {
+            "node": "send-error-email",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "check-action-needed": {
+      "main": [
+        [
+          {
+            "node": "get-portfolio-status",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "log-decision",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1",
+    "saveManualExecutions": true,
+    "callerPolicy": "workflowsFromSameOwner",
+    "errorWorkflow": "",
+    "timezone": "America/New_York"
+  },
+  "staticData": null,
+  "tags": [
+    {
+      "name": "trading",
+      "createdAt": "2024-01-01T00:00:00.000Z"
+    },
+    {
+      "name": "automation",
+      "createdAt": "2024-01-01T00:00:00.000Z"
+    }
+  ],
+  "triggerCount": 1,
+  "versionId": "1"
+}
