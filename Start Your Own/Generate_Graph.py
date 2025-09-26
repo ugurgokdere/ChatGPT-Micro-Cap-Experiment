@@ -19,6 +19,7 @@ import os
 from pathlib import Path
 
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
 DATA_DIR = Path(__file__).resolve().parent
 PORTFOLIO_CSV = DATA_DIR / "chatgpt_portfolio_update.csv"
 
@@ -199,6 +200,28 @@ def load_finnhub_key():
 FINNHUB_API_KEY = load_finnhub_key()
 
 
+=======
+# Get the directory where this script is located (Start Your Own)
+SCRIPT_DIR = Path(__file__).parent
+PORTFOLIO_CSV = SCRIPT_DIR / "chatgpt_portfolio_update.csv"
+
+# Load Finnhub API key from env.local file
+def load_finnhub_key():
+    env_file = Path(__file__).resolve().parent.parent / "env.local"
+    finnhub_key = os.getenv("FINNHUB_API_KEY", "demo")
+    
+    if env_file.exists():
+        with open(env_file, 'r') as f:
+            for line in f:
+                line = line.strip()
+                if line.startswith("FINNHUB_API_KEY="):
+                    finnhub_key = line.split("=", 1)[1]
+    return finnhub_key
+
+FINNHUB_API_KEY = load_finnhub_key()
+
+
+>>>>>>> Stashed changes
 def load_portfolio_totals(baseline_equity: float = 1000) -> pd.DataFrame:
     """Load portfolio equity history including a baseline row."""
     chatgpt_df = pd.read_csv(PORTFOLIO_CSV)
@@ -342,6 +365,7 @@ def main(
 
 if __name__ == "__main__":
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
     parser = argparse.ArgumentParser(description="Plot portfolio performance vs S&P 500")
     parser.add_argument("--start-date", type=str, help="YYYY-MM-DD")
     parser.add_argument("--end-date", type=str, help="YYYY-MM-DD")
@@ -349,6 +373,8 @@ if __name__ == "__main__":
     parser.add_argument("--baseline-file", type=str, help="Path to a text file containing a single number for baseline")
     parser.add_argument("--output", type=str, help="Optional path to save the chart (.png/.jpg/.pdf)")
 =======
+=======
+>>>>>>> Stashed changes
     import argparse
     
     parser = argparse.ArgumentParser(description="Generate portfolio performance graph")
@@ -359,6 +385,9 @@ if __name__ == "__main__":
     
     args = parser.parse_args()
     main(args.baseline_equity)
+<<<<<<< Updated upstream
+>>>>>>> Stashed changes
+=======
 >>>>>>> Stashed changes
 
     args = parser.parse_args()
