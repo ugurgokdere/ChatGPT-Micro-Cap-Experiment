@@ -19,17 +19,46 @@ from __future__ import annotations
 from dataclasses import dataclass
 from datetime import datetime, timedelta
 from pathlib import Path
-from typing import Any, cast, Dict, List, Optional
+from typing import Any, cast,Dict, List, Optional
 import os
 import warnings
-import time
-import json
-import logging
 
 import numpy as np
 import pandas as pd
+<<<<<<< Updated upstream
+<<<<<<< Updated upstream
+<<<<<<< Updated upstream
+<<<<<<< Updated upstream
+<<<<<<< Updated upstream
 import yfinance as yf
+import json
+import logging
+=======
+=======
+>>>>>>> Stashed changes
+=======
+>>>>>>> Stashed changes
+=======
+>>>>>>> Stashed changes
+=======
+>>>>>>> Stashed changes
+from typing import Any, cast
+import os
+import time
 import finnhub
+<<<<<<< Updated upstream
+<<<<<<< Updated upstream
+<<<<<<< Updated upstream
+<<<<<<< Updated upstream
+>>>>>>> Stashed changes
+=======
+>>>>>>> Stashed changes
+=======
+>>>>>>> Stashed changes
+=======
+>>>>>>> Stashed changes
+=======
+>>>>>>> Stashed changes
 
 # Optional pandas-datareader import for Stooq access
 try:
@@ -50,6 +79,7 @@ def set_asof(date: str | datetime | pd.Timestamp | None) -> None:
         return
     ASOF_DATE = pd.Timestamp(date).normalize()
     pure_date = ASOF_DATE.date()
+
     print(f"Setting date as {pure_date}.")
 
 # Allow env var override:  ASOF_DATE=YYYY-MM-DD python trading_script.py
@@ -87,8 +117,17 @@ def _log_initial_state():
 # Configuration helpers — benchmark tickers (tickers.json)
 # ------------------------------
 
+
+
+logger = logging.getLogger(__name__)
+
 def _read_json_file(path: Path) -> Optional[Dict]:
-    """Read and parse JSON from `path`. Return dict on success, None if not found or invalid."""
+    """Read and parse JSON from `path`. Return dict on success, None if not found or invalid.
+
+    - FileNotFoundError -> return None
+    - JSON decode error -> log a warning and return None
+    - Other IO errors -> log a warning and return None
+    """
     try:
         logger.info("Reading JSON file: %s", path)
         with path.open("r", encoding="utf-8") as fh:
@@ -106,7 +145,20 @@ def _read_json_file(path: Path) -> Optional[Dict]:
         return None
 
 def load_benchmarks(script_dir: Path | None = None) -> List[str]:
-    """Return a list of benchmark tickers."""
+    """Return a list of benchmark tickers.
+
+    Looks for a `tickers.json` file in either:
+      - script_dir (if provided) OR the module SCRIPT_DIR, and then
+      - script_dir.parent (project root candidate).
+
+    Expected schema:
+      {"benchmarks": ["IWO", "XBI", "SPY", "IWM"]}
+
+    Behavior:
+    - If file missing or malformed -> return DEFAULT_BENCHMARKS copy.
+    - If 'benchmarks' key missing or not a list -> log warning and return defaults.
+    - Normalizes tickers (strip, upper) and preserves order while removing duplicates.
+    """
     base = Path(script_dir) if script_dir else SCRIPT_DIR
     candidates = [base, base.parent]
 
@@ -142,6 +194,7 @@ def load_benchmarks(script_dir: Path | None = None) -> List[str]:
 
     return result if result else DEFAULT_BENCHMARKS.copy()
 
+
 # ------------------------------
 # Date helpers
 # ------------------------------
@@ -168,6 +221,7 @@ def trading_day_window(target: datetime | None = None) -> tuple[pd.Timestamp, pd
     d = last_trading_date(target)
     return d, (d + pd.Timedelta(days=1))
 
+
 # ------------------------------
 # Data access layer
 # ------------------------------
@@ -182,6 +236,7 @@ STOOQ_MAP = {
 
 # Symbols we should *not* attempt on Stooq
 STOOQ_BLOCKLIST = {"^RUT"}
+
 
 # ------------------------------
 # Data access layer (UPDATED)
@@ -215,7 +270,7 @@ def _normalize_ohlcv(df: pd.DataFrame) -> pd.DataFrame:
         except Exception:
             df = df.copy()
             df.columns = ["_".join(map(str, t)).strip("_") for t in df.columns.to_flat_index()]
-
+            
     # Ensure all expected columns exist
     for c in ["Open", "High", "Low", "Close", "Volume"]:
         if c not in df.columns:
@@ -307,7 +362,12 @@ def _stooq_download(
         return pd.DataFrame()
 
 def _weekend_safe_range(period: str | None, start: Any, end: Any) -> tuple[pd.Timestamp, pd.Timestamp]:
-    """Compute a concrete [start, end) window."""
+    """
+    Compute a concrete [start, end) window.
+    - If explicit start/end provided: use them (add +1 day to end to make it exclusive).
+    - If period is '1d': use the last trading day's [Fri, Sat) window on weekends.
+    - If period like '2d'/'5d': build a window ending at the last trading day.
+    """
     if start or end:
         end_ts = pd.Timestamp(end) if end else last_trading_date() + pd.Timedelta(days=1)
         start_ts = pd.Timestamp(start) if start else (end_ts - pd.Timedelta(days=5))
@@ -326,7 +386,16 @@ def _weekend_safe_range(period: str | None, start: Any, end: Any) -> tuple[pd.Ti
     return start_ts, end_ts
 
 def download_price_data(ticker: str, **kwargs: Any) -> FetchResult:
-    """Robust OHLCV fetch with multi-stage fallbacks."""
+    """
+    Robust OHLCV fetch with multi-stage fallbacks:
+
+    Order:
+      1) Yahoo Finance via yfinance
+      2) Stooq via pandas-datareader
+      3) Stooq direct CSV
+      4) Index proxies (e.g., ^GSPC->SPY, ^RUT->IWM) via Yahoo
+    Returns a DataFrame with columns [Open, High, Low, Close, Adj Close, Volume].
+    """
     # Pull out range args, compute a weekend-safe window
     period = kwargs.pop("period", None)
     start = kwargs.pop("start", None)
@@ -363,6 +432,8 @@ def download_price_data(ticker: str, **kwargs: Any) -> FetchResult:
     empty = pd.DataFrame(columns=["Open", "High", "Low", "Close", "Adj Close", "Volume"])
     return FetchResult(empty, "empty")
 
+
+
 # ------------------------------
 # File path configuration
 # ------------------------------
@@ -381,7 +452,7 @@ def set_data_dir(data_dir: Path) -> None:
 def load_finnhub_key():
     env_file = SCRIPT_DIR / "env.local"
     finnhub_key = os.getenv("FINNHUB_API_KEY", "demo")
-
+    
     if env_file.exists():
         with open(env_file, 'r') as f:
             for line in f:
@@ -396,36 +467,37 @@ def get_stock_data_with_finnhub(ticker: str, period: str = "1d") -> pd.DataFrame
     """Get stock data using Finnhub API only."""
     try:
         finnhub_client = finnhub.Client(api_key=FINNHUB_API_KEY)
-
+        
         if period == "1d":
             # Get current quote
             quote = finnhub_client.quote(ticker)
-
+            
             if quote and 'c' in quote and quote['c'] > 0:
                 price = quote['c']  # Current price
                 open_price = quote.get('o', price)  # Open price
                 high_price = quote.get('h', price)  # High price
                 low_price = quote.get('l', price)   # Low price
-
+                
                 today_date = pd.Timestamp.now().normalize()
                 data = pd.DataFrame({
                     'Open': [open_price],
                     'High': [high_price],
-                    'Low': [low_price],
+                    'Low': [low_price], 
                     'Close': [price],
                     'Volume': [0],  # Volume not available in quote
                     'Adj Close': [price]
                 }, index=[today_date])
                 print(f"Successfully fetched {ticker} price ${price:.2f} from Finnhub")
                 return data
-
+                
         elif period == "2d":
             # For 2d data, get historical data
+            import time
             end_time = int(time.time())
             start_time = end_time - (2 * 24 * 60 * 60)  # 2 days ago
-
+            
             candles = finnhub_client.stock_candles(ticker, 'D', start_time, end_time)
-
+            
             if candles and 's' in candles and candles['s'] == 'ok' and len(candles['c']) >= 2:
                 dates = [pd.Timestamp.fromtimestamp(ts).normalize() for ts in candles['t']]
                 data = pd.DataFrame({
@@ -438,10 +510,10 @@ def get_stock_data_with_finnhub(ticker: str, period: str = "1d") -> pd.DataFrame
                 }, index=dates)
                 print(f"Successfully fetched {ticker} 2-day data from Finnhub")
                 return data
-
+                
     except Exception as e:
         print(f"Finnhub failed for {ticker}: {e}")
-
+    
     # If Finnhub fails, allow manual price input for 1d period
     if period == "1d":
         print(f"\nFinnhub failed for {ticker}.")
@@ -453,7 +525,7 @@ def get_stock_data_with_finnhub(ticker: str, period: str = "1d") -> pd.DataFrame
                 data = pd.DataFrame({
                     'Open': [price],
                     'High': [price],
-                    'Low': [price],
+                    'Low': [price], 
                     'Close': [price],
                     'Volume': [0],
                     'Adj Close': [price]
@@ -462,8 +534,365 @@ def get_stock_data_with_finnhub(ticker: str, period: str = "1d") -> pd.DataFrame
                 return data
         except (ValueError, KeyboardInterrupt):
             pass
-
+    
     return pd.DataFrame()
+
+# Load Finnhub API key from env.local file
+def load_finnhub_key():
+    env_file = SCRIPT_DIR / "env.local"
+    finnhub_key = os.getenv("FINNHUB_API_KEY", "demo")
+    
+    if env_file.exists():
+        with open(env_file, 'r') as f:
+            for line in f:
+                line = line.strip()
+                if line.startswith("FINNHUB_API_KEY="):
+                    finnhub_key = line.split("=", 1)[1]
+    return finnhub_key
+
+FINNHUB_API_KEY = load_finnhub_key()
+
+def get_stock_data_with_finnhub(ticker: str, period: str = "1d") -> pd.DataFrame:
+    """Get stock data using Finnhub API only."""
+    try:
+        finnhub_client = finnhub.Client(api_key=FINNHUB_API_KEY)
+        
+        if period == "1d":
+            # Get current quote
+            quote = finnhub_client.quote(ticker)
+            
+            if quote and 'c' in quote and quote['c'] > 0:
+                price = quote['c']  # Current price
+                open_price = quote.get('o', price)  # Open price
+                high_price = quote.get('h', price)  # High price
+                low_price = quote.get('l', price)   # Low price
+                
+                today_date = pd.Timestamp.now().normalize()
+                data = pd.DataFrame({
+                    'Open': [open_price],
+                    'High': [high_price],
+                    'Low': [low_price], 
+                    'Close': [price],
+                    'Volume': [0],  # Volume not available in quote
+                    'Adj Close': [price]
+                }, index=[today_date])
+                print(f"Successfully fetched {ticker} price ${price:.2f} from Finnhub")
+                return data
+                
+        elif period == "2d":
+            # For 2d data, get historical data
+            import time
+            end_time = int(time.time())
+            start_time = end_time - (2 * 24 * 60 * 60)  # 2 days ago
+            
+            candles = finnhub_client.stock_candles(ticker, 'D', start_time, end_time)
+            
+            if candles and 's' in candles and candles['s'] == 'ok' and len(candles['c']) >= 2:
+                dates = [pd.Timestamp.fromtimestamp(ts).normalize() for ts in candles['t']]
+                data = pd.DataFrame({
+                    'Open': candles['o'],
+                    'High': candles['h'],
+                    'Low': candles['l'],
+                    'Close': candles['c'],
+                    'Volume': candles['v'],
+                    'Adj Close': candles['c']
+                }, index=dates)
+                print(f"Successfully fetched {ticker} 2-day data from Finnhub")
+                return data
+                
+    except Exception as e:
+        print(f"Finnhub failed for {ticker}: {e}")
+    
+    # If Finnhub fails, allow manual price input for 1d period
+    if period == "1d":
+        print(f"\nFinnhub failed for {ticker}.")
+        try:
+            manual_price = input(f"Enter current price for {ticker} (or press Enter to skip): ").strip()
+            if manual_price:
+                price = float(manual_price)
+                today_date = pd.Timestamp.now().normalize()
+                data = pd.DataFrame({
+                    'Open': [price],
+                    'High': [price],
+                    'Low': [price], 
+                    'Close': [price],
+                    'Volume': [0],
+                    'Adj Close': [price]
+                }, index=[today_date])
+                print(f"Using manually entered price ${price:.2f} for {ticker}")
+                return data
+        except (ValueError, KeyboardInterrupt):
+            pass
+    
+    return pd.DataFrame()
+
+# Load Finnhub API key from env.local file
+def load_finnhub_key():
+    env_file = SCRIPT_DIR / "env.local"
+    finnhub_key = os.getenv("FINNHUB_API_KEY", "demo")
+    
+    if env_file.exists():
+        with open(env_file, 'r') as f:
+            for line in f:
+                line = line.strip()
+                if line.startswith("FINNHUB_API_KEY="):
+                    finnhub_key = line.split("=", 1)[1]
+    return finnhub_key
+
+FINNHUB_API_KEY = load_finnhub_key()
+
+def get_stock_data_with_finnhub(ticker: str, period: str = "1d") -> pd.DataFrame:
+    """Get stock data using Finnhub API only."""
+    try:
+        finnhub_client = finnhub.Client(api_key=FINNHUB_API_KEY)
+        
+        if period == "1d":
+            # Get current quote
+            quote = finnhub_client.quote(ticker)
+            
+            if quote and 'c' in quote and quote['c'] > 0:
+                price = quote['c']  # Current price
+                open_price = quote.get('o', price)  # Open price
+                high_price = quote.get('h', price)  # High price
+                low_price = quote.get('l', price)   # Low price
+                
+                today_date = pd.Timestamp.now().normalize()
+                data = pd.DataFrame({
+                    'Open': [open_price],
+                    'High': [high_price],
+                    'Low': [low_price], 
+                    'Close': [price],
+                    'Volume': [0],  # Volume not available in quote
+                    'Adj Close': [price]
+                }, index=[today_date])
+                print(f"Successfully fetched {ticker} price ${price:.2f} from Finnhub")
+                return data
+                
+        elif period == "2d":
+            # For 2d data, get historical data
+            import time
+            end_time = int(time.time())
+            start_time = end_time - (2 * 24 * 60 * 60)  # 2 days ago
+            
+            candles = finnhub_client.stock_candles(ticker, 'D', start_time, end_time)
+            
+            if candles and 's' in candles and candles['s'] == 'ok' and len(candles['c']) >= 2:
+                dates = [pd.Timestamp.fromtimestamp(ts).normalize() for ts in candles['t']]
+                data = pd.DataFrame({
+                    'Open': candles['o'],
+                    'High': candles['h'],
+                    'Low': candles['l'],
+                    'Close': candles['c'],
+                    'Volume': candles['v'],
+                    'Adj Close': candles['c']
+                }, index=dates)
+                print(f"Successfully fetched {ticker} 2-day data from Finnhub")
+                return data
+                
+    except Exception as e:
+        print(f"Finnhub failed for {ticker}: {e}")
+    
+    # If Finnhub fails, allow manual price input for 1d period
+    if period == "1d":
+        print(f"\nFinnhub failed for {ticker}.")
+        try:
+            manual_price = input(f"Enter current price for {ticker} (or press Enter to skip): ").strip()
+            if manual_price:
+                price = float(manual_price)
+                today_date = pd.Timestamp.now().normalize()
+                data = pd.DataFrame({
+                    'Open': [price],
+                    'High': [price],
+                    'Low': [price], 
+                    'Close': [price],
+                    'Volume': [0],
+                    'Adj Close': [price]
+                }, index=[today_date])
+                print(f"Using manually entered price ${price:.2f} for {ticker}")
+                return data
+        except (ValueError, KeyboardInterrupt):
+            pass
+    
+    return pd.DataFrame()
+
+# Load Finnhub API key from env.local file
+def load_finnhub_key():
+    env_file = SCRIPT_DIR / "env.local"
+    finnhub_key = os.getenv("FINNHUB_API_KEY", "demo")
+    
+    if env_file.exists():
+        with open(env_file, 'r') as f:
+            for line in f:
+                line = line.strip()
+                if line.startswith("FINNHUB_API_KEY="):
+                    finnhub_key = line.split("=", 1)[1]
+    return finnhub_key
+
+FINNHUB_API_KEY = load_finnhub_key()
+
+def get_stock_data_with_finnhub(ticker: str, period: str = "1d") -> pd.DataFrame:
+    """Get stock data using Finnhub API only."""
+    try:
+        finnhub_client = finnhub.Client(api_key=FINNHUB_API_KEY)
+        
+        if period == "1d":
+            # Get current quote
+            quote = finnhub_client.quote(ticker)
+            
+            if quote and 'c' in quote and quote['c'] > 0:
+                price = quote['c']  # Current price
+                open_price = quote.get('o', price)  # Open price
+                high_price = quote.get('h', price)  # High price
+                low_price = quote.get('l', price)   # Low price
+                
+                today_date = pd.Timestamp.now().normalize()
+                data = pd.DataFrame({
+                    'Open': [open_price],
+                    'High': [high_price],
+                    'Low': [low_price], 
+                    'Close': [price],
+                    'Volume': [0],  # Volume not available in quote
+                    'Adj Close': [price]
+                }, index=[today_date])
+                print(f"Successfully fetched {ticker} price ${price:.2f} from Finnhub")
+                return data
+                
+        elif period == "2d":
+            # For 2d data, get historical data
+            import time
+            end_time = int(time.time())
+            start_time = end_time - (2 * 24 * 60 * 60)  # 2 days ago
+            
+            candles = finnhub_client.stock_candles(ticker, 'D', start_time, end_time)
+            
+            if candles and 's' in candles and candles['s'] == 'ok' and len(candles['c']) >= 2:
+                dates = [pd.Timestamp.fromtimestamp(ts).normalize() for ts in candles['t']]
+                data = pd.DataFrame({
+                    'Open': candles['o'],
+                    'High': candles['h'],
+                    'Low': candles['l'],
+                    'Close': candles['c'],
+                    'Volume': candles['v'],
+                    'Adj Close': candles['c']
+                }, index=dates)
+                print(f"Successfully fetched {ticker} 2-day data from Finnhub")
+                return data
+                
+    except Exception as e:
+        print(f"Finnhub failed for {ticker}: {e}")
+    
+    # If Finnhub fails, allow manual price input for 1d period
+    if period == "1d":
+        print(f"\nFinnhub failed for {ticker}.")
+        try:
+            manual_price = input(f"Enter current price for {ticker} (or press Enter to skip): ").strip()
+            if manual_price:
+                price = float(manual_price)
+                today_date = pd.Timestamp.now().normalize()
+                data = pd.DataFrame({
+                    'Open': [price],
+                    'High': [price],
+                    'Low': [price], 
+                    'Close': [price],
+                    'Volume': [0],
+                    'Adj Close': [price]
+                }, index=[today_date])
+                print(f"Using manually entered price ${price:.2f} for {ticker}")
+                return data
+        except (ValueError, KeyboardInterrupt):
+            pass
+    
+    return pd.DataFrame()
+
+# Load Finnhub API key from env.local file
+def load_finnhub_key():
+    env_file = SCRIPT_DIR / "env.local"
+    finnhub_key = os.getenv("FINNHUB_API_KEY", "demo")
+    
+    if env_file.exists():
+        with open(env_file, 'r') as f:
+            for line in f:
+                line = line.strip()
+                if line.startswith("FINNHUB_API_KEY="):
+                    finnhub_key = line.split("=", 1)[1]
+    return finnhub_key
+
+FINNHUB_API_KEY = load_finnhub_key()
+
+def get_stock_data_with_finnhub(ticker: str, period: str = "1d") -> pd.DataFrame:
+    """Get stock data using Finnhub API only."""
+    try:
+        finnhub_client = finnhub.Client(api_key=FINNHUB_API_KEY)
+        
+        if period == "1d":
+            # Get current quote
+            quote = finnhub_client.quote(ticker)
+            
+            if quote and 'c' in quote and quote['c'] > 0:
+                price = quote['c']  # Current price
+                open_price = quote.get('o', price)  # Open price
+                high_price = quote.get('h', price)  # High price
+                low_price = quote.get('l', price)   # Low price
+                
+                today_date = pd.Timestamp.now().normalize()
+                data = pd.DataFrame({
+                    'Open': [open_price],
+                    'High': [high_price],
+                    'Low': [low_price], 
+                    'Close': [price],
+                    'Volume': [0],  # Volume not available in quote
+                    'Adj Close': [price]
+                }, index=[today_date])
+                print(f"Successfully fetched {ticker} price ${price:.2f} from Finnhub")
+                return data
+                
+        elif period == "2d":
+            # For 2d data, get historical data
+            import time
+            end_time = int(time.time())
+            start_time = end_time - (2 * 24 * 60 * 60)  # 2 days ago
+            
+            candles = finnhub_client.stock_candles(ticker, 'D', start_time, end_time)
+            
+            if candles and 's' in candles and candles['s'] == 'ok' and len(candles['c']) >= 2:
+                dates = [pd.Timestamp.fromtimestamp(ts).normalize() for ts in candles['t']]
+                data = pd.DataFrame({
+                    'Open': candles['o'],
+                    'High': candles['h'],
+                    'Low': candles['l'],
+                    'Close': candles['c'],
+                    'Volume': candles['v'],
+                    'Adj Close': candles['c']
+                }, index=dates)
+                print(f"Successfully fetched {ticker} 2-day data from Finnhub")
+                return data
+                
+    except Exception as e:
+        print(f"Finnhub failed for {ticker}: {e}")
+    
+    # If Finnhub fails, allow manual price input for 1d period
+    if period == "1d":
+        print(f"\nFinnhub failed for {ticker}.")
+        try:
+            manual_price = input(f"Enter current price for {ticker} (or press Enter to skip): ").strip()
+            if manual_price:
+                price = float(manual_price)
+                today_date = pd.Timestamp.now().normalize()
+                data = pd.DataFrame({
+                    'Open': [price],
+                    'High': [price],
+                    'Low': [price], 
+                    'Close': [price],
+                    'Volume': [0],
+                    'Adj Close': [price]
+                }, index=[today_date])
+                print(f"Using manually entered price ${price:.2f} for {ticker}")
+                return data
+        except (ValueError, KeyboardInterrupt):
+            pass
+    
+    return pd.DataFrame()
+
 
 # ------------------------------
 # Portfolio operations
@@ -629,19 +1058,34 @@ Would you like to log a manual trade? Enter 'b' for buy, 's' for sell, or press 
     # ------- Daily pricing + stop-loss execution -------
     s, e = trading_day_window()
     for _, stock in portfolio_df.iterrows():
+<<<<<<< Updated upstream
         ticker = str(stock["ticker"]).upper()
         shares = int(stock["shares"]) if not pd.isna(stock["shares"]) else 0
         cost = float(stock["buy_price"]) if not pd.isna(stock["buy_price"]) else 0.0
         cost_basis = float(stock["cost_basis"]) if not pd.isna(stock["cost_basis"]) else cost * shares
         stop = float(stock["stop_loss"]) if not pd.isna(stock["stop_loss"]) else 0.0
 
-        # Use download_price_data as primary, finnhub as fallback
         fetch = download_price_data(ticker, start=s, end=e, auto_adjust=False, progress=False)
         data = fetch.df
-
-        # If primary fetch failed, try Finnhub
-        if data.empty:
-            data = get_stock_data_with_finnhub(ticker, period="1d")
+=======
+        ticker = stock["ticker"]
+        shares = int(stock["shares"])
+        cost = stock["buy_price"]
+        stop = stock["stop_loss"]
+        data = get_stock_data_with_finnhub(ticker, period="1d")
+<<<<<<< Updated upstream
+<<<<<<< Updated upstream
+<<<<<<< Updated upstream
+<<<<<<< Updated upstream
+>>>>>>> Stashed changes
+=======
+>>>>>>> Stashed changes
+=======
+>>>>>>> Stashed changes
+=======
+>>>>>>> Stashed changes
+=======
+>>>>>>> Stashed changes
 
         if data.empty:
             print(f"No data for {ticker} (source={fetch.source}).")
@@ -713,6 +1157,8 @@ Would you like to log a manual trade? Enter 'b' for buy, 's' for sell, or press 
 
     return portfolio_df, cash
 
+
+
 # ------------------------------
 # Trade logging
 # ------------------------------
@@ -773,6 +1219,11 @@ def log_manual_buy(
             print("Returning...")
             return cash, chatgpt_portfolio
 
+<<<<<<< Updated upstream
+<<<<<<< Updated upstream
+<<<<<<< Updated upstream
+<<<<<<< Updated upstream
+<<<<<<< Updated upstream
     if not isinstance(chatgpt_portfolio, pd.DataFrame) or chatgpt_portfolio.empty:
         chatgpt_portfolio = pd.DataFrame(
             columns=["ticker", "shares", "stop_loss", "buy_price", "cost_basis"]
@@ -781,16 +1232,23 @@ def log_manual_buy(
     s, e = trading_day_window()
     fetch = download_price_data(ticker, start=s, end=e, auto_adjust=False, progress=False)
     data = fetch.df
-
-    # If primary fetch failed, try Finnhub
-    if data.empty:
-        data = get_stock_data_with_finnhub(ticker, period="1d")
-
+=======
+=======
+>>>>>>> Stashed changes
+=======
+>>>>>>> Stashed changes
+=======
+>>>>>>> Stashed changes
+=======
+>>>>>>> Stashed changes
+    data = get_stock_data_with_finnhub(ticker, period="1d")
+    data = cast(pd.DataFrame, data)
+>>>>>>> Stashed changes
     if data.empty:
         print(f"Manual buy for {ticker} failed: no market data available (source={fetch.source}).")
         return cash, chatgpt_portfolio
 
-    o = float(data.get("Open", [np.nan])[-1]) if "Open" in data else np.nan
+    o = float(data.get("Open", [np.nan])[-1])
     h = float(data["High"].iloc[-1])
     l = float(data["Low"].iloc[-1])
     if np.isnan(o):
@@ -898,15 +1356,27 @@ If this is a mistake, enter 1, or hit Enter."""
     if shares_sold > total_shares:
         print(f"Manual sell for {ticker} failed: trying to sell {shares_sold} shares but only own {total_shares}.")
         return cash, chatgpt_portfolio
+<<<<<<< Updated upstream
+<<<<<<< Updated upstream
+<<<<<<< Updated upstream
+<<<<<<< Updated upstream
+<<<<<<< Updated upstream
 
     s, e = trading_day_window()
     fetch = download_price_data(ticker, start=s, end=e, auto_adjust=False, progress=False)
     data = fetch.df
-
-    # If primary fetch failed, try Finnhub
-    if data.empty:
-        data = get_stock_data_with_finnhub(ticker, period="1d")
-
+=======
+=======
+>>>>>>> Stashed changes
+=======
+>>>>>>> Stashed changes
+=======
+>>>>>>> Stashed changes
+=======
+>>>>>>> Stashed changes
+    data = get_stock_data_with_finnhub(ticker, period="1d")
+    data = cast(pd.DataFrame, data)
+>>>>>>> Stashed changes
     if data.empty:
         print(f"Manual sell for {ticker} failed: no market data available (source={fetch.source}).")
         return cash, chatgpt_portfolio
@@ -950,6 +1420,7 @@ If this is a mistake, enter 1, or hit Enter."""
     df.to_csv(TRADE_LOG_CSV, index=False)
     logger.info("Successfully wrote CSV file: %s", TRADE_LOG_CSV)
 
+
     if total_shares == shares_sold:
         chatgpt_portfolio = chatgpt_portfolio[chatgpt_portfolio["ticker"] != ticker]
     else:
@@ -962,6 +1433,8 @@ If this is a mistake, enter 1, or hit Enter."""
     cash += shares_sold * exec_price
     print(f"Manual SELL LIMIT for {ticker} filled at ${exec_price:.2f} ({fetch.source}).")
     return cash, chatgpt_portfolio
+
+
 
 # ------------------------------
 # Reporting / Metrics
@@ -977,21 +1450,32 @@ def daily_results(chatgpt_portfolio: pd.DataFrame, cash: float) -> None:
 
     end_d = last_trading_date()                           # Fri on weekends
     start_d = (end_d - pd.Timedelta(days=4)).normalize()  # go back enough to capture 2 sessions even around holidays
-
+    
     benchmarks = load_benchmarks()  # reads tickers.json or returns defaults
     benchmark_entries = [{"ticker": t} for t in benchmarks]
 
     for stock in portfolio_dict + benchmark_entries:
         ticker = str(stock["ticker"]).upper()
         try:
-            # Try primary data source first
+<<<<<<< Updated upstream
+<<<<<<< Updated upstream
+<<<<<<< Updated upstream
+<<<<<<< Updated upstream
+<<<<<<< Updated upstream
             fetch = download_price_data(ticker, start=start_d, end=(end_d + pd.Timedelta(days=1)), progress=False)
             data = fetch.df
-
-            # If primary failed, try Finnhub
-            if data.empty:
-                data = get_stock_data_with_finnhub(ticker, period="2d")
-
+=======
+=======
+>>>>>>> Stashed changes
+=======
+>>>>>>> Stashed changes
+=======
+>>>>>>> Stashed changes
+=======
+>>>>>>> Stashed changes
+            data = get_stock_data_with_finnhub(ticker, period="2d")
+            data = cast(pd.DataFrame, data)
+>>>>>>> Stashed changes
             if data.empty or len(data) < 2:
                 rows.append([ticker, "—", "—", "—"])
                 continue
@@ -1070,6 +1554,7 @@ def daily_results(chatgpt_portfolio: pd.DataFrame, cash: float) -> None:
     rf_daily = (1 + rf_annual) ** (1 / 252) - 1
     rf_period = (1 + rf_daily) ** n_days - 1
 
+<<<<<<< Updated upstream
     # Stats
     mean_daily = float(r.mean())
     std_daily = float(r.std(ddof=1))
@@ -1199,6 +1684,28 @@ def daily_results(chatgpt_portfolio: pd.DataFrame, cash: float) -> None:
     print(f"{'Cash Balance:':32} ${cash:>14,.2f}")
 
     print("\n[ Holdings ]")
+=======
+    # Output
+    print(f"Total Sharpe Ratio over {n_days} days: {sharpe_total:.4f}")
+    print(f"Total Sortino Ratio over {n_days} days: {sortino_total:.4f}")
+    print(f"Latest ChatGPT Equity: ${final_equity:.2f}")
+    # Get S&P 500 data using Finnhub
+    try:
+        finnhub_client = finnhub.Client(api_key=FINNHUB_API_KEY)
+        spy_quote = finnhub_client.quote("SPY")
+        if spy_quote and 'c' in spy_quote:
+            current_spy = spy_quote['c']
+            # Estimate based on SPY starting around $410 on 2025-06-27
+            estimated_start = 410.0
+            scaling_factor = 100 / estimated_start
+            spx_value = current_spy * scaling_factor
+            print(f"$100 Invested in the S&P 500 (SPY): ${spx_value:.2f}")
+        else:
+            print("S&P 500 data unavailable")
+    except Exception as e:
+        print(f"S&P 500 data fetch failed: {e}")
+    print("today's portfolio:")
+>>>>>>> Stashed changes
     print(chatgpt_portfolio)
 
     print("\n[ Your Instructions ]")
@@ -1210,6 +1717,7 @@ def daily_results(chatgpt_portfolio: pd.DataFrame, cash: float) -> None:
         "\n"
         "*Paste everything above into ChatGPT*"
     )
+
 
 # ------------------------------
 # Orchestration
@@ -1284,7 +1792,7 @@ def main(data_dir: Path | None = None) -> None:
     """Check versions, then run the trading script."""
     if data_dir is not None:
         set_data_dir(data_dir)
-
+    
     chatgpt_portfolio, cash = load_latest_portfolio_state()
     chatgpt_portfolio, cash = process_portfolio(chatgpt_portfolio, cash)
     daily_results(chatgpt_portfolio, cash)
@@ -1296,12 +1804,12 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     parser.add_argument("--data-dir", default=None, help="Optional data directory")
     parser.add_argument("--asof", default=None, help="Treat this YYYY-MM-DD as 'today' (e.g., 2025-08-27)")
-    parser.add_argument("--log-level", default="INFO",
+    parser.add_argument("--log-level", default="INFO", 
                        choices=["DEBUG", "INFO", "WARNING", "ERROR", "CRITICAL"],
                        help="Set the logging level (default: INFO)")
     args = parser.parse_args()
 
-
+    
     # Configure logging level
     logging.basicConfig(
         level=getattr(logging, args.log_level.upper()),
