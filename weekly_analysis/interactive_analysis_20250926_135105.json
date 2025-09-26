@@ -1,0 +1,47 @@
+{
+  "analysis_date": "2025-09-26T13:51:05.180384",
+  "research_source": "Manual input",
+  "stocks_analyzed": [
+    "ALDX"
+  ],
+  "detailed_analysis": {
+    "ALDX": {
+      "ticker": "ALDX",
+      "current_price": 4.95,
+      "market_cap": 296505000.0,
+      "is_micro_cap": true,
+      "micro_cap_eligible": true,
+      "company_name": "Aldeyra Therapeutics Inc",
+      "industry": "Biotechnology",
+      "pe_ratio": null,
+      "revenue_growth": null,
+      "assessment_score": 0,
+      "recommendation": "HOLD",
+      "key_factors": [],
+      "compliance_issues": []
+    }
+  },
+  "ai_analysis": {
+    "research_tickers": [
+      "ALDX"
+    ],
+    "current_portfolio": [],
+    "cash_available": 100.0,
+    "ai_analysis": {
+      "error": "OpenAI API error: Error code: 401 - {'error': {'message': 'Incorrect API key provided: sk-proj-********************************************************************************************************************************************************uJYA. You can find your API key at https://platform.openai.com/account/api-keys.', 'type': 'invalid_request_error', 'param': None, 'code': 'invalid_api_key'}}",
+      "recommendations": [],
+      "thesis": ""
+    },
+    "analysis_date": "2025-09-26T13:51:05.180374"
+  },
+  "buy_candidates": [],
+  "sell_recommendations": [],
+  "hold_positions": [
+    {
+      "ticker": "ALDX",
+      "current_price": 4.95,
+      "reason": "Monitor only - Low assessment score",
+      "assessment_score": 0
+    }
+  ]
+}
