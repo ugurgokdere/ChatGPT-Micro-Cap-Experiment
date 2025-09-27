@@ -33,10 +33,22 @@ class InteractiveResearchAnalyzer:
         """Interactive collection of stock tickers from user."""
         print("📝 WEEKLY RESEARCH STOCK COLLECTION")
         print("=" * 50)
-        print("Enter the stock tickers from your weekly research report.")
+
+        # Automatically include current portfolio positions
+        try:
+            positions, _ = self.portfolio_analyzer.get_current_portfolio_state()
+            portfolio_stocks = [pos['ticker'] for pos in positions if isinstance(pos, dict) and pos.get('ticker')]
+            if portfolio_stocks:
+                print(f"🎯 Auto-including current portfolio positions: {', '.join(portfolio_stocks)}")
+                stocks = portfolio_stocks.copy()
+                print(f"📊 Portfolio stocks added: {len(stocks)}")
+            else:
+                stocks = []
+        except:
+            stocks = []
+
+        print("\nEnter additional stock tickers from your weekly research report.")
         print("Type 'done' when finished, or 'quit' to exit.\n")
-        
-        stocks = []
         
         while True:
             ticker_input = input(f"Enter stock ticker #{len(stocks) + 1} (or 'done'/'quit'): ").strip().upper()
@@ -287,17 +299,8 @@ Focus on actionable recommendations for the next 1-3 months."""
                     "assessment_score": assessment_score
                 })
         
-        # Check current portfolio for sells (if any positions not in research)
-        positions, _ = self.portfolio_analyzer.get_current_portfolio_state()
-        for pos in positions:
-            ticker = pos['ticker']
-            if ticker not in tickers:
-                recommendations["sell_recommendations"].append({
-                    "ticker": ticker,
-                    "reason": "Not in current week's research focus",
-                    "current_value": pos.get('shares', 0) * pos.get('buy_price', 0),
-                    "confidence": "MEDIUM"
-                })
+        # Note: Portfolio positions are always considered part of our research focus
+        # If a stock is in our portfolio, we should analyze it, not automatically suggest selling it
         
         return recommendations
     
@@ -384,12 +387,333 @@ Focus on actionable recommendations for the next 1-3 months."""
             print(f"❌ Error saving analysis: {e}")
             return None
     
+    def analyze_current_portfolio(self):
+        """Analyze current portfolio positions automatically."""
+        print("📊 CURRENT PORTFOLIO ANALYSIS")
+        print("=" * 50)
+
+        try:
+            # Get current portfolio positions
+            positions, cash = self.portfolio_analyzer.get_current_portfolio_state()
+
+            if not positions:
+                print("❌ No current positions found in portfolio.")
+                return None
+
+            current_tickers = [pos['ticker'] for pos in positions]
+            print(f"📈 Found {len(current_tickers)} positions: {', '.join(current_tickers)}")
+            print(f"💰 Cash available: ${cash:.2f}\n")
+
+            # Analyze each current position
+            detailed_analysis = self.get_detailed_analysis(current_tickers)
+
+            # Generate AI recommendations for current portfolio
+            ai_analysis = self.generate_ai_recommendations(current_tickers, detailed_analysis)
+
+            # Generate portfolio-specific recommendations
+            recommendations = self.generate_portfolio_recommendations(current_tickers, detailed_analysis, ai_analysis, positions, cash)
+
+            # Display results
+            self.print_portfolio_analysis(recommendations)
+
+            # Save results
+            timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
+            filename = f"portfolio_analysis_{timestamp}.json"
+            self.save_recommendations(recommendations, filename)
+
+            return recommendations
+
+        except Exception as e:
+            print(f"❌ Portfolio analysis failed: {e}")
+            return None
+
+    def generate_portfolio_recommendations(self, tickers: List[str], detailed_analysis: Dict, ai_analysis: Dict, positions: List, cash: float) -> Dict:
+        """Generate recommendations specifically for current portfolio positions."""
+        recommendations = {
+            "analysis_date": datetime.now().isoformat(),
+            "analysis_type": "Current Portfolio Analysis",
+            "total_positions": len(positions),
+            "cash_available": cash,
+            "detailed_analysis": detailed_analysis,
+            "ai_analysis": ai_analysis,
+            "hold_recommendations": [],
+            "sell_recommendations": [],
+            "reduce_recommendations": [],
+            "increase_recommendations": [],
+            "portfolio_health": {}
+        }
+
+        total_portfolio_value = sum(pos.get('shares', 0) * pos.get('buy_price', 0) for pos in positions) + cash
+
+        for pos in positions:
+            ticker = pos['ticker']
+            shares = pos.get('shares', 0)
+            buy_price = pos.get('buy_price', 0)
+            position_value = shares * buy_price
+            portfolio_weight = (position_value / total_portfolio_value * 100) if total_portfolio_value > 0 else 0
+
+            analysis = detailed_analysis.get(ticker, {})
+            if 'error' in analysis:
+                continue
+
+            assessment_score = analysis.get('assessment_score', 0)
+            current_price = analysis.get('current_price', buy_price)
+            market_cap = analysis.get('market_cap', 0)
+            compliance_issues = analysis.get('compliance_issues', [])
+
+            # Calculate P&L
+            current_value = shares * current_price if current_price > 0 else position_value
+            pnl = current_value - position_value
+            pnl_percent = (pnl / position_value * 100) if position_value > 0 else 0
+
+            position_data = {
+                "ticker": ticker,
+                "shares": shares,
+                "buy_price": buy_price,
+                "current_price": current_price,
+                "position_value": position_value,
+                "current_value": current_value,
+                "pnl": pnl,
+                "pnl_percent": pnl_percent,
+                "portfolio_weight": portfolio_weight,
+                "assessment_score": assessment_score,
+                "market_cap": market_cap,
+                "compliance_issues": compliance_issues
+            }
+
+            # Decision logic for current positions
+            if assessment_score >= 5 and not compliance_issues and pnl_percent >= -10:
+                # Strong position - consider increasing
+                if portfolio_weight < 15:  # Not over-weighted
+                    recommendations["increase_recommendations"].append({
+                        **position_data,
+                        "reason": f"Strong fundamentals (score: {assessment_score}/7), good performance ({pnl_percent:+.1f}%)",
+                        "action": "INCREASE",
+                        "suggested_addition": f"${min(1000, cash * 0.3):.0f}" if cash > 100 else "Limited by cash"
+                    })
+                else:
+                    recommendations["hold_recommendations"].append({
+                        **position_data,
+                        "reason": f"Strong fundamentals but already well-weighted ({portfolio_weight:.1f}%)",
+                        "action": "HOLD"
+                    })
+
+            elif assessment_score >= 3 and pnl_percent >= -15:
+                # Decent position - hold
+                recommendations["hold_recommendations"].append({
+                    **position_data,
+                    "reason": f"Moderate fundamentals (score: {assessment_score}/7), acceptable performance ({pnl_percent:+.1f}%)",
+                    "action": "HOLD"
+                })
+
+            elif assessment_score >= 2 and pnl_percent >= -25:
+                # Weak position - consider reducing
+                recommendations["reduce_recommendations"].append({
+                    **position_data,
+                    "reason": f"Weak fundamentals (score: {assessment_score}/7) or underperforming ({pnl_percent:+.1f}%)",
+                    "action": "REDUCE",
+                    "suggested_reduction": f"{min(50, shares * 0.5):.0f} shares"
+                })
+
+            else:
+                # Poor position - consider selling
+                recommendations["sell_recommendations"].append({
+                    **position_data,
+                    "reason": f"Poor fundamentals (score: {assessment_score}/7) and/or significant losses ({pnl_percent:+.1f}%)",
+                    "action": "SELL",
+                    "urgency": "HIGH" if pnl_percent < -30 else "MEDIUM"
+                })
+
+        # Portfolio health metrics
+        total_positions = len(positions)
+        avg_score = sum(detailed_analysis.get(pos['ticker'], {}).get('assessment_score', 0) for pos in positions) / total_positions if total_positions > 0 else 0
+        total_pnl = sum(recommendations[key][i]['pnl'] for key in ['hold_recommendations', 'sell_recommendations', 'reduce_recommendations', 'increase_recommendations'] for i in range(len(recommendations[key])))
+
+        recommendations["portfolio_health"] = {
+            "total_positions": total_positions,
+            "average_assessment_score": round(avg_score, 2),
+            "total_unrealized_pnl": round(total_pnl, 2),
+            "cash_percentage": round((cash / total_portfolio_value * 100), 2) if total_portfolio_value > 0 else 0,
+            "diversification_score": min(10, total_positions * 2),  # Simple diversification metric
+            "risk_level": "HIGH" if avg_score < 3 else "MEDIUM" if avg_score < 4 else "LOW"
+        }
+
+        return recommendations
+
+    def print_portfolio_analysis(self, recommendations: Dict):
+        """Print formatted portfolio analysis results."""
+        print("\n" + "=" * 70)
+        print("📊 CURRENT PORTFOLIO ANALYSIS RESULTS")
+        print("=" * 70)
+
+        health = recommendations.get('portfolio_health', {})
+        print(f"\n🏥 PORTFOLIO HEALTH OVERVIEW:")
+        print(f"   Total Positions: {health.get('total_positions', 0)}")
+        print(f"   Average Quality Score: {health.get('average_assessment_score', 0)}/7")
+        print(f"   Total Unrealized P&L: ${health.get('total_unrealized_pnl', 0):+.2f}")
+        print(f"   Cash Percentage: {health.get('cash_percentage', 0):.1f}%")
+        print(f"   Risk Level: {health.get('risk_level', 'UNKNOWN')}")
+        print(f"   Diversification Score: {health.get('diversification_score', 0)}/10")
+
+        # Sell recommendations
+        sell_recs = recommendations.get('sell_recommendations', [])
+        print(f"\n🔴 SELL RECOMMENDATIONS: {len(sell_recs)}")
+        if sell_recs:
+            for rec in sell_recs:
+                print(f"   • {rec['ticker']}: {rec['shares']} shares (P&L: {rec['pnl_percent']:+.1f}%)")
+                print(f"     Reason: {rec['reason']}")
+                print(f"     Urgency: {rec.get('urgency', 'MEDIUM')}")
+        else:
+            print("   ✅ No immediate sell recommendations")
+
+        # Reduce recommendations
+        reduce_recs = recommendations.get('reduce_recommendations', [])
+        print(f"\n🟡 REDUCE POSITION RECOMMENDATIONS: {len(reduce_recs)}")
+        if reduce_recs:
+            for rec in reduce_recs:
+                print(f"   • {rec['ticker']}: Reduce by {rec.get('suggested_reduction', 'some')} (P&L: {rec['pnl_percent']:+.1f}%)")
+                print(f"     Reason: {rec['reason']}")
+        else:
+            print("   ✅ No reduction recommendations")
+
+        # Hold recommendations
+        hold_recs = recommendations.get('hold_recommendations', [])
+        print(f"\n🟢 HOLD RECOMMENDATIONS: {len(hold_recs)}")
+        if hold_recs:
+            for rec in hold_recs:
+                print(f"   • {rec['ticker']}: {rec['shares']} shares (P&L: {rec['pnl_percent']:+.1f}%, Weight: {rec['portfolio_weight']:.1f}%)")
+                print(f"     Reason: {rec['reason']}")
+
+        # Increase recommendations
+        increase_recs = recommendations.get('increase_recommendations', [])
+        print(f"\n🚀 INCREASE POSITION RECOMMENDATIONS: {len(increase_recs)}")
+        if increase_recs:
+            for rec in increase_recs:
+                print(f"   • {rec['ticker']}: Add {rec.get('suggested_addition', 'more')} (P&L: {rec['pnl_percent']:+.1f}%)")
+                print(f"     Reason: {rec['reason']}")
+        else:
+            print("   ℹ️  No increase opportunities identified")
+
+        print(f"\n✨ Analysis completed at {datetime.now().strftime('%H:%M:%S')}")
+
+    def show_current_portfolio(self):
+        """Display current portfolio positions without analysis."""
+        print("\n👁️  CURRENT PORTFOLIO OVERVIEW")
+        print("=" * 50)
+
+        try:
+            # Get current portfolio data
+            positions, cash = self.portfolio_analyzer.get_current_portfolio_state()
+
+            if not positions:
+                print("❌ No portfolio positions found")
+                return
+
+            print(f"💰 Cash Available: ${cash:.2f}")
+            print(f"📊 Total Positions: {len(positions)}")
+
+            # Calculate totals
+            total_cost_basis = 0
+            total_current_value = 0
+
+            print(f"\n📈 PORTFOLIO POSITIONS:")
+            print("-" * 85)
+            print(f"{'TICKER':<8} {'SHARES':<12} {'BUY PRICE':<10} {'CURRENT':<10} {'COST BASIS':<12} {'CURRENT VALUE':<15} {'P&L %':<8}")
+            print("-" * 85)
+
+            # Get current prices for all positions
+            print("⏳ Fetching current market prices...")
+
+            for pos in positions:
+                if isinstance(pos, dict):
+                    ticker = pos.get('ticker', 'N/A')
+                    shares = pos.get('shares', 0)
+                    buy_price = pos.get('buy_price', 0)
+                    cost_basis = pos.get('cost_basis', 0)
+
+                    # Fetch current price from market
+                    try:
+                        fundamentals = self.market_researcher.get_stock_fundamentals(ticker)
+                        current_price = fundamentals.get('current_price', 0)
+                    except:
+                        current_price = 0
+
+                    # Calculate current value and P&L
+                    current_value = shares * current_price
+                    pnl_percent = ((current_value - cost_basis) / cost_basis * 100) if cost_basis > 0 else 0
+
+                    total_cost_basis += cost_basis
+                    total_current_value += current_value
+
+                    print(f"{ticker:<8} {shares:<12.2f} ${buy_price:<9.2f} ${current_price:<9.2f} ${cost_basis:<11.2f} ${current_value:<14.2f} {pnl_percent:+6.1f}%")
+
+            # Portfolio summary
+            print("-" * 85)
+            total_pnl = total_current_value - total_cost_basis
+            total_pnl_percent = (total_pnl / total_cost_basis * 100) if total_cost_basis > 0 else 0
+            total_equity = total_current_value + cash
+
+            print(f"{'TOTALS':<8} {'':<12} {'':<10} {'':<10} ${total_cost_basis:<11.2f} ${total_current_value:<14.2f} {total_pnl_percent:+6.1f}%")
+            print("-" * 85)
+            print(f"💼 Total Equity: ${total_equity:.2f}")
+            print(f"📊 Total P&L: ${total_pnl:+.2f} ({total_pnl_percent:+.1f}%)")
+
+            # Ask user what they want to do next
+            print(f"\n🔄 What would you like to do next?")
+            print("1. 📊 Analyze Portfolio (with AI recommendations)")
+            print("2. 🔍 Research Individual Stocks")
+            print("3. 🚪 Exit")
+
+            next_choice = input("\nSelect option (1-3): ").strip()
+
+            if next_choice == "1":
+                print("\n" + "="*60)
+                self.analyze_current_portfolio()
+            elif next_choice == "2":
+                print("\n" + "="*60)
+                self.run_manual_research()
+            else:
+                print("\n👋 Thank you for using the Interactive Research Analyzer!")
+
+        except Exception as e:
+            print(f"❌ Error displaying portfolio: {e}")
+
     def run_interactive_session(self):
         """Run the complete interactive research analysis session."""
         print("🔬 INTERACTIVE WEEKLY RESEARCH ANALYZER")
         print("=" * 60)
-        print("Analyze stocks from your weekly research with AI recommendations.\n")
-        
+        print("Choose your analysis type:\n")
+        print("1. 📊 Analyze Current Portfolio (Recommended)")
+        print("2. 👁️  Show Current Portfolio")
+        print("3. 🔍 Manual Stock Research")
+        print("4. 🚀 Both Portfolio + New Research")
+
+        choice = input("\nSelect option (1-4) or press Enter for option 1: ").strip()
+
+        if choice == "2":
+            self.show_current_portfolio()
+        elif choice == "3":
+            self.run_manual_research()
+        elif choice == "4":
+            print("\n" + "="*60)
+            self.analyze_current_portfolio()
+            print("\n" + "="*60)
+            input("\nPress Enter to continue with manual research...")
+            self.run_manual_research()
+        else:  # Default to option 1
+            portfolio_analysis = self.analyze_current_portfolio()
+            if portfolio_analysis:
+                choice = input("\n🔍 Would you like to research additional stocks? (y/N): ").lower().strip()
+                if choice in ['y', 'yes']:
+                    print("\n" + "="*60)
+                    self.run_manual_research()
+
+    def run_manual_research(self):
+        """Run manual stock research (original functionality)."""
+        print("\n🔍 MANUAL STOCK RESEARCH")
+        print("=" * 50)
+        print("Research specific stocks with AI recommendations.\n")
+
         try:
             # Step 1: Collect stocks
             stocks = self.collect_research_stocks()
@@ -410,13 +734,13 @@ Focus on actionable recommendations for the next 1-3 months."""
             
             # Step 6: Save results
             self.save_recommendations(recommendations)
-            
-            print(f"\n✅ Analysis complete! Analyzed {len(stocks)} stocks with AI recommendations.")
-            
+
+            print(f"\n✅ Manual research complete! Analyzed {len(stocks)} stocks with AI recommendations.")
+
         except KeyboardInterrupt:
-            print("\n\n❌ Analysis interrupted by user.")
+            print("\n\n❌ Manual research interrupted by user.")
         except Exception as e:
-            print(f"\n❌ Analysis failed: {e}")
+            print(f"\n❌ Manual research failed: {e}")
 
 
 def main():

@@ -78,7 +78,7 @@ class PortfolioAnalyzer:
                 # Fallback to Start Your Own directory
                 csv_path = str(Path(__file__).parent / "Start Your Own" / "chatgpt_portfolio_update.csv")
             
-            portfolio_data, cash_balance = load_latest_portfolio_state(csv_path)
+            portfolio_data, cash_balance = load_latest_portfolio_state()
             return portfolio_data, cash_balance
         except Exception as e:
             print(f"Error loading current portfolio: {e}")

@@ -1,0 +1,221 @@
+{
+  "analysis_date": "2025-09-26T15:27:21.270054",
+  "research_source": "Manual input",
+  "stocks_analyzed": [
+    "HRZN",
+    "SPIR",
+    "NVEC",
+    "ADCT"
+  ],
+  "detailed_analysis": {
+    "HRZN": {
+      "ticker": "HRZN",
+      "current_price": 6.22,
+      "market_cap": 264660999.99999994,
+      "is_micro_cap": true,
+      "micro_cap_eligible": true,
+      "company_name": "Horizon Technology Finance Corp",
+      "industry": "Financial Services",
+      "pe_ratio": null,
+      "revenue_growth": -78.34,
+      "assessment_score": 2.0,
+      "recommendation": "AVOID",
+      "key_factors": [
+        "Micro-cap size",
+        "Positive news sentiment"
+      ],
+      "compliance_issues": []
+    },
+    "SPIR": {
+      "ticker": "SPIR",
+      "current_price": 11.31,
+      "market_cap": 368479800.0,
+      "is_micro_cap": false,
+      "micro_cap_eligible": false,
+      "company_name": "Spire Global Inc",
+      "industry": "Professional Services",
+      "pe_ratio": null,
+      "revenue_growth": -7.2,
+      "assessment_score": 3.5,
+      "recommendation": "HOLD",
+      "key_factors": [
+        "Small/Mid-cap size",
+        "Reasonable P/S ratio",
+        "Stable revenue",
+        "Technical data unavailable",
+        "Limited news coverage"
+      ],
+      "compliance_issues": []
+    },
+    "NVEC": {
+      "ticker": "NVEC",
+      "current_price": 65.78,
+      "market_cap": 318375200.0,
+      "is_micro_cap": false,
+      "micro_cap_eligible": false,
+      "company_name": "NVE Corp",
+      "industry": "Semiconductors",
+      "pe_ratio": 22.1456,
+      "revenue_growth": -9.21,
+      "assessment_score": 5.0,
+      "recommendation": "BUY",
+      "key_factors": [
+        "Small/Mid-cap size",
+        "Reasonable P/E",
+        "Stable revenue",
+        "Strong profitability",
+        "Adequate liquidity",
+        "Technical data unavailable",
+        "Limited news coverage"
+      ],
+      "compliance_issues": []
+    },
+    "ADCT": {
+      "ticker": "ADCT",
+      "current_price": 3.45,
+      "market_cap": 388125000.0,
+      "is_micro_cap": false,
+      "micro_cap_eligible": false,
+      "company_name": "ADC Therapeutics SA",
+      "industry": "Biotechnology",
+      "pe_ratio": null,
+      "revenue_growth": 15.73,
+      "assessment_score": 4.5,
+      "recommendation": "BUY",
+      "key_factors": [
+        "Small/Mid-cap size",
+        "Reasonable P/S ratio",
+        "Revenue growth",
+        "Adequate liquidity",
+        "Technical data unavailable",
+        "Limited news coverage"
+      ],
+      "compliance_issues": [
+        "Not US-listed"
+      ]
+    }
+  },
+  "ai_analysis": {
+    "research_tickers": [
+      "HRZN",
+      "SPIR",
+      "NVEC",
+      "ADCT"
+    ],
+    "current_portfolio": [
+      "EL",
+      "IVV",
+      "MVIS",
+      "QQQ",
+      "REKR",
+      "DUOT",
+      "PDSB",
+      "TNXP",
+      "MIST",
+      "ALDX"
+    ],
+    "cash_available": 0.0,
+    "ai_analysis": {
+      "error": "OpenAI API error: Error code: 401 - {'error': {'message': 'Incorrect API key provided: sk-proj-********************************************************************************************************************************************************uJYA. You can find your API key at https://platform.openai.com/account/api-keys.', 'type': 'invalid_request_error', 'param': None, 'code': 'invalid_api_key'}}",
+      "recommendations": [],
+      "thesis": ""
+    },
+    "analysis_date": "2025-09-26T15:27:21.270041"
+  },
+  "buy_candidates": [
+    {
+      "ticker": "NVEC",
+      "current_price": 65.78,
+      "reason": "High-quality larger-cap stock with score 5.0/7",
+      "confidence": "HIGH",
+      "assessment_score": 5.0,
+      "key_factors": [
+        "Small/Mid-cap size",
+        "Reasonable P/E",
+        "Stable revenue"
+      ]
+    }
+  ],
+  "sell_recommendations": [
+    {
+      "ticker": "EL",
+      "reason": "Not in current week's research focus",
+      "current_value": 5939.001000000001,
+      "confidence": "MEDIUM"
+    },
+    {
+      "ticker": "IVV",
+      "reason": "Not in current week's research focus",
+      "current_value": 4267.100399999999,
+      "confidence": "MEDIUM"
+    },
+    {
+      "ticker": "MVIS",
+      "reason": "Not in current week's research focus",
+      "current_value": 733.22702790662,
+      "confidence": "MEDIUM"
+    },
+    {
+      "ticker": "QQQ",
+      "reason": "Not in current week's research focus",
+      "current_value": 5.137289999999999,
+      "confidence": "MEDIUM"
+    },
+    {
+      "ticker": "REKR",
+      "reason": "Not in current week's research focus",
+      "current_value": 100.24000000000001,
+      "confidence": "MEDIUM"
+    },
+    {
+      "ticker": "DUOT",
+      "reason": "Not in current week's research focus",
+      "current_value": 97.75999999999999,
+      "confidence": "MEDIUM"
+    },
+    {
+      "ticker": "PDSB",
+      "reason": "Not in current week's research focus",
+      "current_value": 53.0,
+      "confidence": "MEDIUM"
+    },
+    {
+      "ticker": "TNXP",
+      "reason": "Not in current week's research focus",
+      "current_value": 98.8,
+      "confidence": "MEDIUM"
+    },
+    {
+      "ticker": "MIST",
+      "reason": "Not in current week's research focus",
+      "current_value": 97.41,
+      "confidence": "MEDIUM"
+    },
+    {
+      "ticker": "ALDX",
+      "reason": "Not in current week's research focus",
+      "current_value": 95.19,
+      "confidence": "MEDIUM"
+    }
+  ],
+  "hold_positions": [
+    {
+      "ticker": "HRZN",
+      "current_price": 6.22,
+      "reason": "Micro-Cap with moderate potential (score: 2.0/7)",
+      "assessment_score": 2.0
+    },
+    {
+      "ticker": "SPIR",
+      "current_price": 11.31,
+      "reason": "Larger-Cap with moderate potential (score: 3.5/7)",
+      "assessment_score": 3.5
+    },
+    {
+      "ticker": "ADCT",
+      "current_price": 3.45,
+      "reason": "Larger-Cap with moderate potential (score: 4.5/7)",
+      "assessment_score": 4.5
+    }
+  ]
+}
